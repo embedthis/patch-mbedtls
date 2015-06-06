@@ -2,7 +2,7 @@
     "name": "mbedtls",
     "title": "MbedTLS",
     "description": "MbedTLS SSL Stack",
-    "version": "1.3.10",
+    "version": "1.0.0",
     "keywords": [
         "mbedtls",
         "ssl",
