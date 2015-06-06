@@ -1,11 +1,979 @@
---- Makefile.shared.original	2014-01-07 10:06:24.000000000 -0800
-+++ Makefile.shared	2014-01-07 10:04:30.000000000 -0800
-@@ -250,7 +250,7 @@
- 	if [ -n "$$SHLIB_SOVER_NODOT" ]; then \
- 		SHAREDFLAGS="$$SHAREDFLAGS -compatibility_version $$SHLIB_SOVER_NODOT"; \
- 	fi; \
--	SHAREDFLAGS="$$SHAREDFLAGS -install_name $(INSTALLTOP)/$(LIBDIR)/$$SHLIB$(SHLIB_EXT)"; \
-+	SHAREDFLAGS="$$SHAREDFLAGS -install_name @rpath/$$SHLIB$(SHLIB_EXT) -Wl,-rpath,@executable_path/ -Wl,-rpath,@loader_path/"; \
- 	$(LINK_SO_A)
- link_app.darwin:	# is there run-path on darwin?
- 	$(LINK_APP)
+diff --git a/library/aes.c b/library/aes.c
+index 9d96064..a2a81f3 100644
+--- a/library/aes.c
++++ b/library/aes.c
+@@ -53,12 +53,18 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#define FSb AESFSb
++#endif
++
+ #if !defined(POLARSSL_AES_ALT)
+ 
++#if EMBEDTHIS || 1
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * 32-bit integer manipulation macros (little endian)
+@@ -1449,4 +1455,8 @@ exit:
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef FSb
++#endif
++
+ #endif /* POLARSSL_AES_C */
+diff --git a/library/arc4.c b/library/arc4.c
+index 309d16a..0ef95a6 100644
+--- a/library/arc4.c
++++ b/library/arc4.c
+@@ -48,10 +48,12 @@
+ 
+ #if !defined(POLARSSL_ARC4_ALT)
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ void arc4_init( arc4_context *ctx )
+ {
+diff --git a/library/asn1parse.c b/library/asn1parse.c
+index e4f46eb..5886941 100644
+--- a/library/asn1parse.c
++++ b/library/asn1parse.c
+@@ -44,10 +44,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * ASN.1 DER decoding routines
+diff --git a/library/bignum.c b/library/bignum.c
+index f479bc9..316fbed 100644
+--- a/library/bignum.c
++++ b/library/bignum.c
+@@ -50,10 +50,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #define ciL    (sizeof(t_uint))         /* chars in limb  */
+ #define biL    (ciL << 3)               /* bits  in limb  */
+diff --git a/library/blowfish.c b/library/blowfish.c
+index 77191e7..5d0c099 100644
+--- a/library/blowfish.c
++++ b/library/blowfish.c
+@@ -40,10 +40,12 @@
+ 
+ #if !defined(POLARSSL_BLOWFISH_ALT)
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * 32-bit integer manipulation macros (big endian)
+diff --git a/library/camellia.c b/library/camellia.c
+index d80f51f..8e1b1ec 100644
+--- a/library/camellia.c
++++ b/library/camellia.c
+@@ -46,12 +46,18 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#define FSb CAMELLIAFSb
++#endif
++
+ #if !defined(POLARSSL_CAMELLIA_ALT)
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * 32-bit integer manipulation macros (big endian)
+@@ -1069,4 +1075,8 @@ int camellia_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef FSb
++#endif
++
+ #endif /* POLARSSL_CAMELLIA_C */
+diff --git a/library/ccm.c b/library/ccm.c
+index e397e0a..d3b1bc4 100644
+--- a/library/ccm.c
++++ b/library/ccm.c
+@@ -50,10 +50,12 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST && POLARSSL_AES_C */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #define CCM_ENCRYPT 0
+ #define CCM_DECRYPT 1
+diff --git a/library/cipher.c b/library/cipher.c
+index b69d331..d1f5f00 100644
+--- a/library/cipher.c
++++ b/library/cipher.c
+@@ -55,10 +55,15 @@
+ #define strcasecmp _stricmp
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
++#if EMBEDTHIS
++#define supported_init cipher_supported_init
++#endif
+ 
+ static int supported_init = 0;
+ 
+@@ -913,4 +918,8 @@ int cipher_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS
++#undef supported_init
++#endif
++
+ #endif /* POLARSSL_CIPHER_C */
+diff --git a/library/ctr_drbg.c b/library/ctr_drbg.c
+index 24adff0..307c8d0 100644
+--- a/library/ctr_drbg.c
++++ b/library/ctr_drbg.c
+@@ -50,10 +50,12 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * Non-public function wrapped by ctr_crbg_init(). Necessary to allow NIST
+diff --git a/library/des.c b/library/des.c
+index 080e113..37289c5 100644
+--- a/library/des.c
++++ b/library/des.c
+@@ -49,10 +49,12 @@
+ 
+ #if !defined(POLARSSL_DES_ALT)
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * 32-bit integer manipulation macros (big endian)
+diff --git a/library/dhm.c b/library/dhm.c
+index 0a4f820..efdeeae 100644
+--- a/library/dhm.c
++++ b/library/dhm.c
+@@ -55,10 +55,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * helper to validate the mpi size and import it
+diff --git a/library/ecp.c b/library/ecp.c
+index adef09e..5a5652c 100644
+--- a/library/ecp.c
++++ b/library/ecp.c
+@@ -76,10 +76,12 @@
+ #endif /* __ARMCC_VERSION */
+ #endif /*_MSC_VER */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(POLARSSL_SELF_TEST)
+ /*
+diff --git a/library/entropy.c b/library/entropy.c
+index c90c7e4..f0d143e 100644
+--- a/library/entropy.c
++++ b/library/entropy.c
+@@ -50,10 +50,12 @@
+ #include "polarssl/havege.h"
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #define ENTROPY_MAX_LOOP    256     /**< Maximum amount to loop before error */
+ 
+diff --git a/library/gcm.c b/library/gcm.c
+index b537b02..92c106d 100644
+--- a/library/gcm.c
++++ b/library/gcm.c
+@@ -78,10 +78,12 @@
+ }
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * Precompute small multiples of H, that is set
+diff --git a/library/havege.c b/library/havege.c
+index fe65699..d3d7d69 100644
+--- a/library/havege.c
++++ b/library/havege.c
+@@ -40,10 +40,12 @@
+ 
+ #include <string.h>
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /* ------------------------------------------------------------------------
+  * On average, one iteration accesses two 8-word blocks in the havege WALK
+diff --git a/library/hmac_drbg.c b/library/hmac_drbg.c
+index c7904d0..84f782c 100644
+--- a/library/hmac_drbg.c
++++ b/library/hmac_drbg.c
+@@ -51,10 +51,12 @@
+ #endif /* POLARSSL_SELF_TEST */
+ #endif /* POLARSSL_PLATFORM_C */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * HMAC_DRBG update, using optional additional data (10.1.2.2)
+diff --git a/library/md.c b/library/md.c
+index cf4d7e3..d9cbb48 100644
+--- a/library/md.c
++++ b/library/md.c
+@@ -43,10 +43,12 @@
+ #define strcasecmp  _stricmp
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ static const int supported_digests[] = {
+ 
+diff --git a/library/md2.c b/library/md2.c
+index 17569c0..509aac9 100644
+--- a/library/md2.c
++++ b/library/md2.c
+@@ -51,10 +51,12 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if !defined(POLARSSL_MD2_ALT)
+ 
+diff --git a/library/md4.c b/library/md4.c
+index d33cc52..550140f 100644
+--- a/library/md4.c
++++ b/library/md4.c
+@@ -51,10 +51,12 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if !defined(POLARSSL_MD4_ALT)
+ 
+@@ -493,4 +495,10 @@ int md4_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef F
++#undef P
++#undef S
++#endif
++
+ #endif /* POLARSSL_MD4_C */
+diff --git a/library/md5.c b/library/md5.c
+index 49f0674..300c973 100644
+--- a/library/md5.c
++++ b/library/md5.c
+@@ -50,10 +50,12 @@
+ #endif /* POLARSSL_PLATFORM_C */
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if !defined(POLARSSL_MD5_ALT)
+ 
+@@ -614,4 +616,10 @@ int md5_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef F
++#undef P
++#undef S
++#endif
++
+ #endif /* POLARSSL_MD5_C */
+diff --git a/library/md_wrap.c b/library/md_wrap.c
+index f554333..e814a7c 100644
+--- a/library/md_wrap.c
++++ b/library/md_wrap.c
+@@ -70,10 +70,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(POLARSSL_MD2_C)
+ 
+diff --git a/library/memory_buffer_alloc.c b/library/memory_buffer_alloc.c
+index 5eb8ab1..d4dbc7c 100644
+--- a/library/memory_buffer_alloc.c
++++ b/library/memory_buffer_alloc.c
+@@ -43,10 +43,12 @@
+ #include "polarssl/threading.h"
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #define MAGIC1       0xFF00AA55
+ #define MAGIC2       0xEE119966
+diff --git a/library/oid.c b/library/oid.c
+index b616d7e..e110c3a 100644
+--- a/library/oid.c
++++ b/library/oid.c
+@@ -689,4 +689,8 @@ int oid_get_numeric_string( char *buf, size_t size,
+     return( (int) ( size - n ) );
+ }
+ 
++#if EMBEDTHIS
++#undef SAFE_SNPRINTF
++#endif
++
+ #endif /* POLARSSL_OID_C */
+diff --git a/library/pem.c b/library/pem.c
+index 68be8fd..33e80bd 100644
+--- a/library/pem.c
++++ b/library/pem.c
+@@ -45,10 +45,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(POLARSSL_PEM_PARSE_C)
+ void pem_init( pem_context *ctx )
+diff --git a/library/pk.c b/library/pk.c
+index 4d78b57..e1f5677 100644
+--- a/library/pk.c
++++ b/library/pk.c
+@@ -40,10 +40,12 @@
+ #include "polarssl/ecdsa.h"
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * Initialise a pk_context
+diff --git a/library/pk_wrap.c b/library/pk_wrap.c
+index 6068605..270d0be 100644
+--- a/library/pk_wrap.c
++++ b/library/pk_wrap.c
+@@ -50,10 +50,12 @@
+ #define polarssl_free       free
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(POLARSSL_RSA_C)
+ static int rsa_can_do( pk_type_t type )
+diff --git a/library/pkcs12.c b/library/pkcs12.c
+index f84fd52..f4cefa3 100644
+--- a/library/pkcs12.c
++++ b/library/pkcs12.c
+@@ -48,10 +48,12 @@
+ #include "polarssl/des.h"
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ static int pkcs12_parse_pbe_params( asn1_buf *params,
+                                     asn1_buf *salt, int *iterations )
+diff --git a/library/pkparse.c b/library/pkparse.c
+index 39c51f6..3073d27 100644
+--- a/library/pkparse.c
++++ b/library/pkparse.c
+@@ -62,10 +62,12 @@
+ #endif
+ 
+ #if defined(POLARSSL_FS_IO)
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * Load all data from a file into a given buffer.
+diff --git a/library/ripemd160.c b/library/ripemd160.c
+index 2c196f4..88ae458 100644
+--- a/library/ripemd160.c
++++ b/library/ripemd160.c
+@@ -74,10 +74,12 @@
+ }
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ void ripemd160_init( ripemd160_context *ctx )
+ {
+@@ -145,6 +147,7 @@ void ripemd160_process( ripemd160_context *ctx, const unsigned char data[64] )
+ 
+ #define S( x, n ) ( ( x << n ) | ( x >> (32 - n) ) )
+ 
++
+ #define P( a, b, c, d, e, r, s, f, k )      \
+     a += f( b, c, d ) + X[r] + k;           \
+     a = S( a, s ) + e;                      \
+@@ -648,4 +651,16 @@ int ripemd160_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef F
++#undef K
++#undef F1
++#undef F2
++#undef F3
++#undef F4
++#undef F5
++#undef P
++#undef S
++#endif
++
+ #endif /* POLARSSL_RIPEMD160_C */
+diff --git a/library/sha1.c b/library/sha1.c
+index fca6109..878f8ab 100644
+--- a/library/sha1.c
++++ b/library/sha1.c
+@@ -51,9 +51,11 @@
+ #endif /* POLARSSL_SELF_TEST */
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if !defined(POLARSSL_SHA1_ALT)
+ 
+@@ -660,4 +662,11 @@ exit:
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef F
++#undef P
++#undef R
++#undef S
++#endif
++
+ #endif /* POLARSSL_SHA1_C */
+diff --git a/library/sha256.c b/library/sha256.c
+index 2b4b7e1..46d67c1 100644
+--- a/library/sha256.c
++++ b/library/sha256.c
+@@ -51,9 +51,12 @@
+ #endif /* POLARSSL_SELF_TEST */
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
++
+ 
+ #if !defined(POLARSSL_SHA256_ALT)
+ 
+@@ -741,4 +744,17 @@ exit:
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef P
++#undef R
++#undef SHR
++#undef ROTR
++#undef S0
++#undef S1
++#undef S2
++#undef S3
++#undef F0
++#undef F1
++#endif
++
+ #endif /* POLARSSL_SHA256_C */
+diff --git a/library/sha512.c b/library/sha512.c
+index 4074d33..8b22729 100644
+--- a/library/sha512.c
++++ b/library/sha512.c
+@@ -57,9 +57,11 @@
+ #endif /* POLARSSL_SELF_TEST */
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if !defined(POLARSSL_SHA512_ALT)
+ 
+@@ -801,4 +803,17 @@ exit:
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS || 1
++#undef P
++#undef R
++#undef SHR
++#undef ROTR
++#undef S0
++#undef S1
++#undef S2
++#undef S3
++#undef F0
++#undef F1
++#endif
++
+ #endif /* POLARSSL_SHA512_C */
+diff --git a/library/ssl_ciphersuites.c b/library/ssl_ciphersuites.c
+index 0fee1e6..76325e8 100644
+--- a/library/ssl_ciphersuites.c
++++ b/library/ssl_ciphersuites.c
+@@ -1688,6 +1688,11 @@ const int *ssl_list_ciphersuites( void )
+ #define MAX_CIPHERSUITES    sizeof( ciphersuite_definitions     ) /         \
+                             sizeof( ciphersuite_definitions[0]  )
+ static int supported_ciphersuites[MAX_CIPHERSUITES];
++
++#if EMBEDTHIS
++#define supported_init suites_supported_init
++#endif
++
+ static int supported_init = 0;
+ 
+ const int *ssl_list_ciphersuites( void )
+@@ -1840,4 +1845,8 @@ int ssl_ciphersuite_uses_psk( const ssl_ciphersuite_t *info )
+ }
+ #endif /* POLARSSL_KEY_EXCHANGE__SOME__PSK_ENABLED */
+ 
++#if !EMBEDTHIS
++#undef supported_init
++#endif
++
+ #endif /* POLARSSL_SSL_TLS_C */
+diff --git a/library/ssl_cli.c b/library/ssl_cli.c
+index caeb6f3..d3f8717 100644
+--- a/library/ssl_cli.c
++++ b/library/ssl_cli.c
+@@ -54,10 +54,31 @@ typedef UINT32 uint32_t;
+ 
+ #if defined(POLARSSL_SSL_SESSION_TICKETS)
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
+ #endif
++#endif
++
++#if EMBEDTHIS
++#define ssl_parse_renegotiation_info cli_ssl_parse_renegotiation_info
++#define ssl_parse_max_fragment_length_ext cli_ssl_parse_max_fragment_length_ext
++#define ssl_parse_truncated_hmac_ext cli_ssl_parse_truncated_hmac_ext
++#define ssl_parse_encrypt_then_mac_ext cli_ssl_parse_encrypt_then_mac_ext
++#define ssl_parse_extended_ms_ext cli_ssl_parse_extended_ms_ext
++#define ssl_parse_session_ticket_ext cli_ssl_parse_session_ticket_ext
++#define ssl_parse_alpn_ext cli_ssl_parse_alpn_ext
++#define ssl_write_truncated_hmac_ext cli_ssl_write_truncated_hmac_ext
++#define ssl_write_encrypt_then_mac_ext cli_ssl_write_encrypt_then_mac_ext
++#define ssl_write_extended_ms_ext cli_ssl_write_extended_ms_ext
++#define ssl_write_session_ticket_ext cli_ssl_write_session_ticket_ext
++#define ssl_write_renegotiation_ext cli_ssl_write_renegotiation_ext
++#define ssl_write_max_fragment_length_ext cli_ssl_write_max_fragment_length_ext
++#define ssl_write_supported_point_formats_ext cli_ssl_write_supported_point_formats_ext
++#define ssl_write_alpn_ext cli_ssl_write_alpn_ext
++#define ssl_get_ecdh_params_from_cert cli_ssl_get_ecdh_params_from_cert
++#endif
+ 
+ #if defined(POLARSSL_SSL_SERVER_NAME_INDICATION)
+ static void ssl_write_hostname_ext( ssl_context *ssl,
+@@ -2851,4 +2872,24 @@ int ssl_handshake_client_step( ssl_context *ssl )
+ 
+     return( ret );
+ }
++
++#if EMBEDTHIS
++#undef ssl_parse_renegotiation_info
++#undef ssl_parse_max_fragment_length_ext
++#undef ssl_parse_truncated_hmac_ext
++#undef ssl_parse_encrypt_then_mac_ext
++#undef ssl_parse_extended_ms_ext
++#undef ssl_parse_session_ticket_ext
++#undef ssl_parse_alpn_ext
++#undef ssl_write_truncated_hmac_ext
++#undef ssl_write_encrypt_then_mac_ext
++#undef ssl_write_extended_ms_ext
++#undef ssl_write_session_ticket_ext
++#undef ssl_write_renegotiation_ext
++#undef ssl_write_max_fragment_length_ext
++#undef ssl_write_supported_point_formats_ext
++#undef ssl_write_alpn_ext
++#undef ssl_get_ecdh_params_from_cert
++#endif
++
+ #endif /* POLARSSL_SSL_CLI_C */
+diff --git a/library/ssl_srv.c b/library/ssl_srv.c
+index 5f01a01..1fa205e 100644
+--- a/library/ssl_srv.c
++++ b/library/ssl_srv.c
+@@ -51,9 +51,30 @@
+ 
+ #if defined(POLARSSL_SSL_SESSION_TICKETS)
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
++
++#if EMBEDTHIS
++#define ssl_parse_renegotiation_info srv_ssl_parse_renegotiation_info
++#define ssl_parse_max_fragment_length_ext srv_ssl_parse_max_fragment_length_ext
++#define ssl_parse_truncated_hmac_ext srv_ssl_parse_truncated_hmac_ext
++#define ssl_parse_encrypt_then_mac_ext srv_ssl_parse_encrypt_then_mac_ext
++#define ssl_parse_extended_ms_ext srv_ssl_parse_extended_ms_ext
++#define ssl_parse_session_ticket_ext srv_ssl_parse_session_ticket_ext
++#define ssl_parse_alpn_ext srv_ssl_parse_alpn_ext
++#define ssl_write_truncated_hmac_ext srv_ssl_write_truncated_hmac_ext
++#define ssl_write_encrypt_then_mac_ext srv_ssl_write_encrypt_then_mac_ext
++#define ssl_write_extended_ms_ext srv_ssl_write_extended_ms_ext
++#define ssl_write_session_ticket_ext srv_ssl_write_session_ticket_ext
++#define ssl_write_renegotiation_ext srv_ssl_write_renegotiation_ext
++#define ssl_write_max_fragment_length_ext srv_ssl_write_max_fragment_length_ext
++#define ssl_write_supported_point_formats_ext srv_ssl_write_supported_point_formats_ext
++#define ssl_write_alpn_ext srv_ssl_write_alpn_ext
++#define ssl_get_ecdh_params_from_cert srv_ssl_get_ecdh_params_from_cert
++#endif
+ 
+ /*
+  * Serialize a session in the following format:
+@@ -3624,4 +3645,24 @@ int ssl_handshake_server_step( ssl_context *ssl )
+ 
+     return( ret );
+ }
++
++#if EMBEDTHIS
++#undef ssl_parse_renegotiation_info
++#undef ssl_parse_max_fragment_length_ext
++#undef ssl_parse_truncated_hmac_ext
++#undef ssl_parse_encrypt_then_mac_ext
++#undef ssl_parse_extended_ms_ext
++#undef ssl_parse_session_ticket_ext
++#undef ssl_parse_alpn_ext
++#undef ssl_write_truncated_hmac_ext
++#undef ssl_write_encrypt_then_mac_ext
++#undef ssl_write_extended_ms_ext
++#undef ssl_write_session_ticket_ext
++#undef ssl_write_renegotiation_ext
++#undef ssl_write_max_fragment_length_ext
++#undef ssl_write_supported_point_formats_ext
++#undef ssl_write_alpn_ext
++#undef ssl_get_ecdh_params_from_cert
++#endif
++
+ #endif /* POLARSSL_SSL_SRV_C */
+diff --git a/library/ssl_tls.c b/library/ssl_tls.c
+index f079adc..2d81895 100644
+--- a/library/ssl_tls.c
++++ b/library/ssl_tls.c
+@@ -60,9 +60,11 @@
+ #endif
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(POLARSSL_SSL_MAX_FRAGMENT_LENGTH)
+ /*
+diff --git a/library/x509.c b/library/x509.c
+index ab105d8..fc01f6d 100644
+--- a/library/x509.c
++++ b/library/x509.c
+@@ -1084,4 +1084,8 @@ int x509_self_test( int verbose )
+ 
+ #endif /* POLARSSL_SELF_TEST */
+ 
++#if EMBEDTHIS
++#undef SAFE_SNPRINTF
++#endif
++
+ #endif /* POLARSSL_X509_USE_C */
+diff --git a/library/x509_crl.c b/library/x509_crl.c
+index de2079f..b8968c1 100644
+--- a/library/x509_crl.c
++++ b/library/x509_crl.c
+@@ -68,9 +68,11 @@
+ #endif
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  *  Version  ::=  INTEGER  {  v1(0), v2(1)  }
+@@ -764,4 +766,10 @@ void x509_crl_free( x509_crl *crl )
+     while( crl_cur != NULL );
+ }
+ 
++#if EMBEDTHIS
++#undef SAFE_SNPRINTF
++#undef BEFORE_COLON
++#undef BC
++#endif
++
+ #endif /* POLARSSL_X509_CRL_PARSE_C */
+diff --git a/library/x509_crt.c b/library/x509_crt.c
+index b94f213..123013a 100644
+--- a/library/x509_crt.c
++++ b/library/x509_crt.c
+@@ -77,9 +77,11 @@
+ #endif
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  *  Version  ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
+@@ -2154,4 +2156,10 @@ void x509_crt_free( x509_crt *crt )
+     while( cert_cur != NULL );
+ }
+ 
++#if EMBEDTHIS
++#undef SAFE_SNPRINTF
++#undef BEFORE_COLON
++#undef BC
++#endif
++
+ #endif /* POLARSSL_X509_CRT_PARSE_C */
+diff --git a/library/x509_csr.c b/library/x509_csr.c
+index 558b078..b7ed950 100644
+--- a/library/x509_csr.c
++++ b/library/x509_csr.c
+@@ -62,9 +62,11 @@
+ #endif
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  *  Version  ::=  INTEGER  {  v1(0)  }
+@@ -462,4 +464,10 @@ void x509_csr_free( x509_csr *csr )
+     polarssl_zeroize( csr, sizeof( x509_csr ) );
+ }
+ 
++#if EMBEDTHIS
++#undef SAFE_SNPRINTF
++#undef BEFORE_COLON
++#undef BC
++#endif
++
+ #endif /* POLARSSL_X509_CSR_PARSE_C */
+diff --git a/library/x509write_crt.c b/library/x509write_crt.c
+index 80913ec..aa4ef64 100644
+--- a/library/x509write_crt.c
++++ b/library/x509write_crt.c
+@@ -46,9 +46,11 @@
+ #endif /* POLARSSL_PEM_WRITE_C */
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ void x509write_crt_init( x509write_cert *ctx )
+ {
+diff --git a/library/x509write_csr.c b/library/x509write_csr.c
+index c5a5875..ff5c09d 100644
+--- a/library/x509write_csr.c
++++ b/library/x509write_csr.c
+@@ -45,9 +45,11 @@
+ #endif
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ void x509write_csr_init( x509write_csr *ctx )
+ {
+diff --git a/library/xtea.c b/library/xtea.c
+index 0558b93..82a48b6 100644
+--- a/library/xtea.c
++++ b/library/xtea.c
+@@ -44,9 +44,11 @@
+ #if !defined(POLARSSL_XTEA_ALT)
+ 
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void polarssl_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ /*
+  * 32-bit integer manipulation macros (big endian)
