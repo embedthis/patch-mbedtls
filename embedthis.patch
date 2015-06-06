@@ -977,3 +977,6 @@ index 0558b93..82a48b6 100644
  
  /*
   * 32-bit integer manipulation macros (big endian)
+-- 
+2.3.2 (Apple Git-55)
+
