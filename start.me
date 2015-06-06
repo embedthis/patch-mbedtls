@@ -21,7 +21,10 @@ Me.load({
         },
 
         postcache: {
-            depends: [ 'patch', 'makelib' ],
+            depends: [ 'patch', 'packagePak' ],
+            action: `
+print("HERE", App.dir)
+            `
         },
 
         makelib: {
