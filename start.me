@@ -1,0 +1,138 @@
+/*
+    start.me - MbedTLS MakeMe file
+ */
+
+Me.load({
+    plugins: [ 'installs' ],
+
+    settings: {
+        __integrate: true,
+        prefixes: 'install-prefixes',
+    },
+
+    targets: {
+        patch: {
+            action: `
+                trace('Patch', 'Apply patches')
+                for each (f in Path('.').files('*.patch')) {
+                    sh('patch < ' + f)
+                }
+            `
+        },
+
+        postcache: {
+            depends: [ 'patch', 'makelib' ],
+        },
+
+        makelib: {
+            action: `
+                trace('Build', 'MbedTLS libraries')
+                if (Config.OS == 'windows') {
+                    let os = Config.CPU == 'x64' ? 'x86_amd64' : 'x86'
+                    sh('windows.bat ' + os + ' ' + command)
+                } else {
+                    //Debug  sh('make CFLAGS=-g -C library')
+                    sh('make -C library')
+                }
+            `
+        }, 
+    }
+    manifest: {
+        packages: {
+            pak: {
+                inherit:    'package-manifest',
+                prefixes:   [ 'src'],
+                formats:    [ 'tar' ],
+                sets:       [ 'pak' ],
+            },
+        },
+        sets: {
+            pak: [
+                {   
+                    from:       'dist.me', 
+                    to:         '${src}/dist/mbedtls.me',
+
+                },{
+                    from: [ 
+                                'include/polarssl/config.h',
+                                'embedthis.h',
+                                'include/polarssl/check_config.h',
+                                'include/polarssl/platform.h',
+                                'include/polarssl/bignum.h',
+                                'include/polarssl/net.h',
+                                'include/polarssl/dhm.h',
+                                'include/polarssl/md.h',
+                                'include/polarssl/md_wrap.h',
+                                'include/polarssl/md5.h',
+                                'include/polarssl/md2.h',
+                                'include/polarssl/md4.h',
+                                'include/polarssl/rsa.h',
+                                'include/polarssl/asn1.h',
+                                'include/polarssl/pk.h',
+                                'include/polarssl/pk_wrap.h',
+                                'include/polarssl/x509.h',
+                                'include/polarssl/ecp.h',
+                                'include/polarssl/ecdsa.h',
+                                'include/polarssl/x509_crl.h',
+                                'include/polarssl/x509_crt.h',
+                                'include/polarssl/x509_csr.h',
+                                'include/polarssl/cipher.h',
+                                'include/polarssl/cipher_wrap.h',
+                                'include/polarssl/ssl_ciphersuites.h',
+                                'include/polarssl/ecdh.h',
+                                'include/polarssl/sha1.h',
+                                'include/polarssl/sha256.h',
+                                'include/polarssl/sha512.h',
+                                'include/polarssl/aes.h',
+                                'include/polarssl/arc4.h',
+                                'include/polarssl/base64.h',
+                                'include/polarssl/bn_mul.h',
+                                'include/polarssl/camellia.h',
+                                'include/polarssl/ctr_drbg.h',
+                                'include/polarssl/des.h',
+                                'include/polarssl/entropy.h',
+                                'include/polarssl/entropy_poll.h',
+                                'include/polarssl/padlock.h',
+                                'include/polarssl/timing.h',
+                                'include/polarssl/xtea.h',
+                                'include/polarssl/ssl.h',
+                                'include/polarssl/ssl_cache.h',
+                                'include/polarssl/debug.h',
+                                'include/polarssl/blowfish.h',
+                                'include/polarssl/camellia.h',
+                                'include/polarssl/ccm.h',
+                                'include/polarssl/gcm.h',
+                                'include/polarssl/pem.h',
+                                'include/polarssl/asn1write.h',
+                                'include/polarssl/hmac_drbg.h',
+                                'include/polarssl/pkcs12.h',
+                                'include/polarssl/pkcs5.h',
+                                'include/polarssl/oid.h',
+                                'include/polarssl/pbkdf2.h',
+                                'include/polarssl/ripemd160.h',
+                                'include/polarssl/version.h',
+                    ],
+                    to:         '${src}/dist/mbedtls.h',
+                    append:     true,
+                    filter:     /^#include.*\"/mg,
+                    header:     '/*\n * ${settings.title} Library Header\n */\n\n#include \"me.h\"\n\n#if ME_COM_MBEDTLS\n\n#define EMBEDTHIS 1\n\n',
+                    divider:    true,
+                    footer:     '#endif /* ME_COM_MBEDTLS */'
+
+                },{
+                    from:       'library/*.c', 
+                    to:         '${src}/dist/mbedtlsLib.c',
+                    append:     true,
+                    filter:     /^#inc.*polarssl\/.*/mg,
+                    header:     '/*\n * ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
+                    divider:    true,
+                    footer:     '#endif /* ME_COM_MBEDTLS */',
+                    postPerform: function (src, dest, options) {
+                        // let s = dest.readString()
+                        // dest.write(s)
+                    }
+                }
+            ]
+        }
+	}
+})
