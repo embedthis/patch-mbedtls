@@ -13,7 +13,7 @@ Me.load({
             action: `
                 trace('Patch', 'Apply patches')
                 for each (f in Path('.').files('*.patch')) {
-                    sh('patch -p1 < ' + f)
+                    sh('patch -N -p1 < ' + f)
                 }
             `
         },
