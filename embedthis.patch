@@ -1104,37 +1104,3 @@ index 0000000..889f0ce
 +    }
 +}
 +
-diff --git a/start.me b/start.me
-new file mode 100644
-index 0000000..c66e7d3
---- /dev/null
-+++ b/start.me
-@@ -0,0 +1,26 @@
-+/*
-+    start.me - MbedTLS MakeMe file
-+ */
-+
-+Me.load({
-+    targets: {
-+        makepatch: {
-+            shell: `
-+                /* Format patch from the latest commit */
-+                git format-patch -1
-+            `
-+        },
-+
-+        makelib: {
-+            action: `
-+                trace('Build', 'MbedTLS libraries')
-+                if (Config.OS == 'windows') {
-+                    let os = Config.CPU == 'x64' ? 'x86_amd64' : 'x86'
-+                    sh('windows.bat ' + os + ' ' + command)
-+                } else {
-+                    sh('make CFLAGS=-g -C library')
-+                }
-+            `
-+        }
-+    }
-+})
--- 
-
