@@ -40,6 +40,9 @@
     #undef POLARSSL_XTEA_C
 #endif
 
+/*
+    If mbedtls.NAME is defined, then override the MbedTLS definition from config.h
+ */
 #if ME_MBEDTLS_BLOWFISH
     #define POLARSSL_BLOWFISH_C
 #elif ME_MBEDTLS_BLOWFISH == 0
