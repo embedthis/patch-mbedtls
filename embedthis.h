@@ -46,30 +46,30 @@
 
 #if ME_MBEDTLS_DES
     #define POLARSSL_DES_C
-#elif ME_MBEDTLS_DES
+#elif ME_MBEDTLS_DES == 0
     #undef POLARSSL_DES_C
 #endif
 
 #if ME_MBEDTLS_PADLOCK
     #define POLARSSL_PADLOCK_C
-#elif ME_MBEDTLS_PADLOCK
+#elif ME_MBEDTLS_PADLOCK == 0
     #undef POLARSSL_PADLOCK_C
 #endif
 
 #if ME_MBEDTLS_RC4
     #define POLARSSL_RC4
-#elif ME_MBEDTLS_RC4
+#elif ME_MBEDTLS_RC4 == 0
     #undef POLARSSL_RC4
 #endif
 
 #if ME_MBEDTLS_ROM_TABLES
     #define POLARSSL_ROM_TABLES
-#elif ME_MBEDTLS_ROM_TABLES
+#elif ME_MBEDTLS_ROM_TABLES == 0
     #undef POLARSSL_ROM_TABLES
 #endif
 
 #if ME_MBEDTLS_XTEA
     #define POLARSSL_XTEA_C
-#elif ME_MBEDTLS_XTEA
+#elif ME_MBEDTLS_XTEA == 0
     #undef POLARSSL_XTEA_C
 #endif
