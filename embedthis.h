@@ -26,12 +26,6 @@
 /*
     Map MakeMe configuration into MbedTLS defines
  */
-#if ME_MBEDTLS_ASN1_WRITE
-    #define POLARSSL_ASN1_WRITE_C
-#elif ME_MBEDTLS_ASN1_WRITE == 0
-    #undef POLARSSL_ASN1_WRITE_C
-#endif
-
 #if ME_MBEDTLS_BLOWFISH
     #define POLARSSL_BLOWFISH_C
 #elif ME_MBEDTLS_BLOWFISH == 0
