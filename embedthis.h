@@ -27,49 +27,65 @@
     Map MakeMe configuration into MbedTLS defines
  */
 #if ME_MBEDTLS_ASN1_WRITE
+    #undef POLARSSL_ASN1_WRITE_C
     #define POLARSSL_ASN1_WRITE_C 1
 #elif ME_MBEDTLS_ASN1_WRITE == 0
+    #undef POLARSSL_ASN1_WRITE_C
     #define POLARSSL_ASN1_WRITE_C 0
 #endif
 
 #if ME_MBEDTLS_BLOWFISH
+    #undef POLARSSL_BLOWFISH_C
     #define POLARSSL_BLOWFISH_C 1
 #elif ME_MBEDTLS_BLOWFISH == 0
+    #undef POLARSSL_BLOWFISH_C
     #define POLARSSL_BLOWFISH_C 0
 #endif
 
 #if ME_MBEDTLS_CAMELLIA
+    #undef POLARSSL_CAMELLIA_C
     #define POLARSSL_CAMELLIA_C 1
 #elif ME_MBEDTLS_CAMELLIA == 0
+    #undef POLARSSL_CAMELLIA_C
     #define POLARSSL_CAMELLIA_C 0
 #endif
 
 #if ME_MBEDTLS_DES
+    #undef POLARSSL_DES_C
     #define POLARSSL_DES_C 1
 #elif ME_MBEDTLS_DES
+    #undef POLARSSL_DES_C
     #define POLARSSL_DES_C 0
 #endif
 
 #if ME_MBEDTLS_PADLOCK
+    #undef POLARSSL_PADLOCK_C
     #define POLARSSL_PADLOCK_C 1
 #elif ME_MBEDTLS_PADLOCK
+    #undef POLARSSL_PADLOCK_C
     #define POLARSSL_PADLOCK_C 0
 #endif
 
 #if ME_MBEDTLS_RC4
+    #undef POLARSSL_RC4
     #define POLARSSL_RC4 1
 #elif ME_MBEDTLS_RC4
+    #undef POLARSSL_RC4
     #define POLARSSL_RC4 0
 #endif
 
 #if ME_MBEDTLS_ROM_TABLES
+    #undef POLARSSL_ROM_TABLES
     #define POLARSSL_ROM_TABLES 1
 #elif ME_MBEDTLS_ROM_TABLES
+    #undef POLARSSL_ROM_TABLES
     #define POLARSSL_ROM_TABLES 0
 #endif
 
 #if ME_MBEDTLS_XTEA
+    #undef POLARSSL_XTEA_C
     #define POLARSSL_XTEA_C 1
 #elif ME_MBEDTLS_XTEA
+    #undef POLARSSL_XTEA_C
     #define POLARSSL_XTEA_C 0
 #endif
