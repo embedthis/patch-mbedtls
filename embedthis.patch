@@ -1054,31 +1054,19 @@ index 0000000..a790579
 +	}
 +})
 diff --git a/library/net.c b/library/net.c
-index 1fb6884..265897d 100644
+index 265897d..b5f5260 100644
 --- a/library/net.c
 +++ b/library/net.c
-@@ -55,6 +55,11 @@
- #endif
- #endif /* _MSC_VER */
-
-+#if EMBEDTHIS || 1
-+    #undef read
-+    #undef write
-+    #undef close
-+#endif
- #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
- #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
- #define close(fd)               closesocket(fd)
-@@ -583,4 +588,9 @@ void net_close( int fd )
+@@ -588,9 +588,11 @@ void net_close( int fd )
      close( fd );
  }
 
 +#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
-+#if EMBEDTHIS || 1
-+    #define read _read
-+    #define write _write
-+    #define close _close
-+#endif
+ #if EMBEDTHIS || 1
+     #define read _read
+     #define write _write
+     #define close _close
+ #endif
 +#endif
  #endif /* POLARSSL_NET_C */
 --
