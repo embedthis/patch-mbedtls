@@ -18,6 +18,7 @@
 #if ME_APPWEB_PRODUCT || ME_MULTITHREAD
     #define POLARSSL_THREADING_C
     #define POLARSSL_THREADING_ALT
+    typedef MprMutex* threading_mutex_t;
 #endif
 
 #if ME_DEBUG
