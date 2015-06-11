@@ -72,6 +72,214 @@ index 0000000..a790579
 +        }
 +	}
 +})
+diff --git a/include/polarssl/aes.h b/include/polarssl/aes.h
+index 8bcc039..9484983 100644
+--- a/include/polarssl/aes.h
++++ b/include/polarssl/aes.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/bignum.h b/include/polarssl/bignum.h
+index 8e1687b..9ed1b4e 100644
+--- a/include/polarssl/bignum.h
++++ b/include/polarssl/bignum.h
+@@ -49,7 +49,7 @@ typedef  INT32  int32_t;
+ typedef  INT64  int64_t;
+ typedef UINT32 uint32_t;
+ typedef UINT64 uint64_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif /* _MSC_VER && !EFIX64 && !EFI32 */
+ 
+diff --git a/include/polarssl/blowfish.h b/include/polarssl/blowfish.h
+index 21ba7d4..64eb915 100644
+--- a/include/polarssl/blowfish.h
++++ b/include/polarssl/blowfish.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/camellia.h b/include/polarssl/camellia.h
+index 03218d1..c00e920 100644
+--- a/include/polarssl/camellia.h
++++ b/include/polarssl/camellia.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/des.h b/include/polarssl/des.h
+index 3f7236c..4ea8668 100644
+--- a/include/polarssl/des.h
++++ b/include/polarssl/des.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/gcm.h b/include/polarssl/gcm.h
+index 5a94722..9a5db44 100644
+--- a/include/polarssl/gcm.h
++++ b/include/polarssl/gcm.h
+@@ -30,7 +30,7 @@
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+ typedef UINT64 uint64_t;
+-#else
++#elif !VXWORKS
+ #include <stdint.h>
+ #endif
+ 
+diff --git a/include/polarssl/md4.h b/include/polarssl/md4.h
+index 68ac6c1..317f171 100644
+--- a/include/polarssl/md4.h
++++ b/include/polarssl/md4.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/md5.h b/include/polarssl/md5.h
+index d5ce136..223950d 100644
+--- a/include/polarssl/md5.h
++++ b/include/polarssl/md5.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/padlock.h b/include/polarssl/padlock.h
+index 55a0395..2ce0349 100644
+--- a/include/polarssl/padlock.h
++++ b/include/polarssl/padlock.h
+@@ -38,7 +38,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef INT32 int32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/pbkdf2.h b/include/polarssl/pbkdf2.h
+index 28987b3..ea46e1c 100644
+--- a/include/polarssl/pbkdf2.h
++++ b/include/polarssl/pbkdf2.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/pkcs5.h b/include/polarssl/pkcs5.h
+index 6a21af1..8b238e3 100644
+--- a/include/polarssl/pkcs5.h
++++ b/include/polarssl/pkcs5.h
+@@ -34,7 +34,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/ripemd160.h b/include/polarssl/ripemd160.h
+index 2555eb4..d852f19 100644
+--- a/include/polarssl/ripemd160.h
++++ b/include/polarssl/ripemd160.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/sha1.h b/include/polarssl/sha1.h
+index e9e5a8e..cfe5586 100644
+--- a/include/polarssl/sha1.h
++++ b/include/polarssl/sha1.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/sha256.h b/include/polarssl/sha256.h
+index f8917ff..91183a4 100644
+--- a/include/polarssl/sha256.h
++++ b/include/polarssl/sha256.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/sha512.h b/include/polarssl/sha512.h
+index 15d266c..ee0b7b2 100644
+--- a/include/polarssl/sha512.h
++++ b/include/polarssl/sha512.h
+@@ -34,7 +34,7 @@
+ 
+ #if defined(_MSC_VER) || defined(__WATCOMC__)
+   typedef unsigned __int64 uint64_t;
+-#else
++#elif !VXWORKS
+   #include <inttypes.h>
+ #endif
+ 
+diff --git a/include/polarssl/xtea.h b/include/polarssl/xtea.h
+index 02cd8d6..d97c23b 100644
+--- a/include/polarssl/xtea.h
++++ b/include/polarssl/xtea.h
+@@ -35,7 +35,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
 diff --git a/library/aes.c b/library/aes.c
 index 9d96064..a2a81f3 100644
 --- a/library/aes.c
