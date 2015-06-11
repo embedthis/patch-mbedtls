@@ -511,7 +511,7 @@ index 5eb8ab1..d4dbc7c 100644
  #define MAGIC1       0xFF00AA55
  #define MAGIC2       0xEE119966
 diff --git a/library/net.c b/library/net.c
-index 1fb6884..b5f5260 100644
+index 1fb6884..b9c04b8 100644
 --- a/library/net.c
 +++ b/library/net.c
 @@ -55,6 +55,11 @@
@@ -526,12 +526,15 @@ index 1fb6884..b5f5260 100644
  #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
  #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
  #define close(fd)               closesocket(fd)
-@@ -583,4 +588,11 @@ void net_close( int fd )
+@@ -583,4 +588,14 @@ void net_close( int fd )
      close( fd );
  }
  
 +#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
 +#if EMBEDTHIS || 1
++    #undef read
++    #undef write
++    #undef close
 +    #define read _read
 +    #define write _write
 +    #define close _close
