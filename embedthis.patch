@@ -318,6 +318,155 @@ index adef09e..5a5652c 100644
  
  #if defined(POLARSSL_SELF_TEST)
  /*
+diff --git a/library/ecp_curves.c b/library/ecp_curves.c
+index 3786356..5063081 100644
+--- a/library/ecp_curves.c
++++ b/library/ecp_curves.c
+@@ -852,7 +852,7 @@ static inline void carry64( t_uint *dst, t_uint *carry )
+ 
+ #define WIDTH       8 / sizeof( t_uint )
+ #define A( i )      N->p + i * WIDTH
+-#define ADD( i )    add64( p, A( i ), &c )
++#define AD( i )    add64( p, A( i ), &c )
+ #define NEXT        p += WIDTH; carry64( p, &c )
+ #define LAST        p += WIDTH; *p = c; while( ++p < end ) *p = 0
+ 
+@@ -871,9 +871,9 @@ static int ecp_mod_p192( mpi *N )
+     p = N->p;
+     end = p + N->n;
+ 
+-    ADD( 3 ); ADD( 5 );             NEXT; // A0 += A3 + A5
+-    ADD( 3 ); ADD( 4 ); ADD( 5 );   NEXT; // A1 += A3 + A4 + A5
+-    ADD( 4 ); ADD( 5 );             LAST; // A2 += A4 + A5
++    AD( 3 ); AD( 5 );             NEXT; // A0 += A3 + A5
++    AD( 3 ); AD( 4 ); AD( 5 );   NEXT; // A1 += A3 + A4 + A5
++    AD( 4 ); AD( 5 );             LAST; // A2 += A4 + A5
+ 
+ cleanup:
+     return( ret );
+@@ -881,7 +881,7 @@ cleanup:
+ 
+ #undef WIDTH
+ #undef A
+-#undef ADD
++#undef AD
+ #undef NEXT
+ #undef LAST
+ #endif /* POLARSSL_ECP_DP_SECP192R1_ENABLED */
+@@ -962,7 +962,7 @@ static inline void sub32( uint32_t *dst, uint32_t src, signed char *carry )
+     *dst -= src;
+ }
+ 
+-#define ADD( j )    add32( &cur, A( j ), &c );
++#define AD( j )    add32( &cur, A( j ), &c );
+ #define SUB( j )    sub32( &cur, A( j ), &c );
+ 
+ /*
+@@ -1037,10 +1037,10 @@ static int ecp_mod_p224( mpi *N )
+     SUB(  7 ); SUB( 11 );               NEXT; // A0 += -A7 - A11
+     SUB(  8 ); SUB( 12 );               NEXT; // A1 += -A8 - A12
+     SUB(  9 ); SUB( 13 );               NEXT; // A2 += -A9 - A13
+-    SUB( 10 ); ADD(  7 ); ADD( 11 );    NEXT; // A3 += -A10 + A7 + A11
+-    SUB( 11 ); ADD(  8 ); ADD( 12 );    NEXT; // A4 += -A11 + A8 + A12
+-    SUB( 12 ); ADD(  9 ); ADD( 13 );    NEXT; // A5 += -A12 + A9 + A13
+-    SUB( 13 ); ADD( 10 );               LAST; // A6 += -A13 + A10
++    SUB( 10 ); AD(  7 ); AD( 11 );    NEXT; // A3 += -A10 + A7 + A11
++    SUB( 11 ); AD(  8 ); AD( 12 );    NEXT; // A4 += -A11 + A8 + A12
++    SUB( 12 ); AD(  9 ); AD( 13 );    NEXT; // A5 += -A12 + A9 + A13
++    SUB( 13 ); AD( 10 );               LAST; // A6 += -A13 + A10
+ 
+ cleanup:
+     return( ret );
+@@ -1055,28 +1055,28 @@ static int ecp_mod_p256( mpi *N )
+ {
+     INIT( 256 );
+ 
+-    ADD(  8 ); ADD(  9 );
++    AD(  8 ); AD(  9 );
+     SUB( 11 ); SUB( 12 ); SUB( 13 ); SUB( 14 );             NEXT; // A0
+ 
+-    ADD(  9 ); ADD( 10 );
++    AD(  9 ); AD( 10 );
+     SUB( 12 ); SUB( 13 ); SUB( 14 ); SUB( 15 );             NEXT; // A1
+ 
+-    ADD( 10 ); ADD( 11 );
++    AD( 10 ); AD( 11 );
+     SUB( 13 ); SUB( 14 ); SUB( 15 );                        NEXT; // A2
+ 
+-    ADD( 11 ); ADD( 11 ); ADD( 12 ); ADD( 12 ); ADD( 13 );
++    AD( 11 ); AD( 11 ); AD( 12 ); AD( 12 ); AD( 13 );
+     SUB( 15 ); SUB(  8 ); SUB(  9 );                        NEXT; // A3
+ 
+-    ADD( 12 ); ADD( 12 ); ADD( 13 ); ADD( 13 ); ADD( 14 );
++    AD( 12 ); AD( 12 ); AD( 13 ); AD( 13 ); AD( 14 );
+     SUB(  9 ); SUB( 10 );                                   NEXT; // A4
+ 
+-    ADD( 13 ); ADD( 13 ); ADD( 14 ); ADD( 14 ); ADD( 15 );
++    AD( 13 ); AD( 13 ); AD( 14 ); AD( 14 ); AD( 15 );
+     SUB( 10 ); SUB( 11 );                                   NEXT; // A5
+ 
+-    ADD( 14 ); ADD( 14 ); ADD( 15 ); ADD( 15 ); ADD( 14 ); ADD( 13 );
++    AD( 14 ); AD( 14 ); AD( 15 ); AD( 15 ); AD( 14 ); AD( 13 );
+     SUB(  8 ); SUB(  9 );                                   NEXT; // A6
+ 
+-    ADD( 15 ); ADD( 15 ); ADD( 15 ); ADD( 8 );
++    AD( 15 ); AD( 15 ); AD( 15 ); AD( 8 );
+     SUB( 10 ); SUB( 11 ); SUB( 12 ); SUB( 13 );             LAST; // A7
+ 
+ cleanup:
+@@ -1092,40 +1092,40 @@ static int ecp_mod_p384( mpi *N )
+ {
+     INIT( 384 );
+ 
+-    ADD( 12 ); ADD( 21 ); ADD( 20 );
++    AD( 12 ); AD( 21 ); AD( 20 );
+     SUB( 23 );                                              NEXT; // A0
+ 
+-    ADD( 13 ); ADD( 22 ); ADD( 23 );
++    AD( 13 ); AD( 22 ); AD( 23 );
+     SUB( 12 ); SUB( 20 );                                   NEXT; // A2
+ 
+-    ADD( 14 ); ADD( 23 );
++    AD( 14 ); AD( 23 );
+     SUB( 13 ); SUB( 21 );                                   NEXT; // A2
+ 
+-    ADD( 15 ); ADD( 12 ); ADD( 20 ); ADD( 21 );
++    AD( 15 ); AD( 12 ); AD( 20 ); AD( 21 );
+     SUB( 14 ); SUB( 22 ); SUB( 23 );                        NEXT; // A3
+ 
+-    ADD( 21 ); ADD( 21 ); ADD( 16 ); ADD( 13 ); ADD( 12 ); ADD( 20 ); ADD( 22 );
++    AD( 21 ); AD( 21 ); AD( 16 ); AD( 13 ); AD( 12 ); AD( 20 ); AD( 22 );
+     SUB( 15 ); SUB( 23 ); SUB( 23 );                        NEXT; // A4
+ 
+-    ADD( 22 ); ADD( 22 ); ADD( 17 ); ADD( 14 ); ADD( 13 ); ADD( 21 ); ADD( 23 );
++    AD( 22 ); AD( 22 ); AD( 17 ); AD( 14 ); AD( 13 ); AD( 21 ); AD( 23 );
+     SUB( 16 );                                              NEXT; // A5
+ 
+-    ADD( 23 ); ADD( 23 ); ADD( 18 ); ADD( 15 ); ADD( 14 ); ADD( 22 );
++    AD( 23 ); AD( 23 ); AD( 18 ); AD( 15 ); AD( 14 ); AD( 22 );
+     SUB( 17 );                                              NEXT; // A6
+ 
+-    ADD( 19 ); ADD( 16 ); ADD( 15 ); ADD( 23 );
++    AD( 19 ); AD( 16 ); AD( 15 ); AD( 23 );
+     SUB( 18 );                                              NEXT; // A7
+ 
+-    ADD( 20 ); ADD( 17 ); ADD( 16 );
++    AD( 20 ); AD( 17 ); AD( 16 );
+     SUB( 19 );                                              NEXT; // A8
+ 
+-    ADD( 21 ); ADD( 18 ); ADD( 17 );
++    AD( 21 ); AD( 18 ); AD( 17 );
+     SUB( 20 );                                              NEXT; // A9
+ 
+-    ADD( 22 ); ADD( 19 ); ADD( 18 );
++    AD( 22 ); AD( 19 ); AD( 18 );
+     SUB( 21 );                                              NEXT; // A10
+ 
+-    ADD( 23 ); ADD( 20 ); ADD( 19 );
++    AD( 23 ); AD( 20 ); AD( 19 );
+     SUB( 22 );                                              LAST; // A11
+ 
+ cleanup:
 diff --git a/library/entropy.c b/library/entropy.c
 index c90c7e4..f0d143e 100644
 --- a/library/entropy.c
