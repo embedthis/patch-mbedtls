@@ -1079,6 +1079,6 @@ index 1fb6884..265897d 100644
 +    #define write _write
 +    #define close _close
 +#endif
-+#endif /* WIN32 */
++#endif
  #endif /* POLARSSL_NET_C */
 --
