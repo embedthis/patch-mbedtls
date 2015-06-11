@@ -1073,10 +1073,12 @@ index 1fb6884..265897d 100644
      close( fd );
  }
 
++#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
 +#if EMBEDTHIS || 1
 +    #define read _read
 +    #define write _write
 +    #define close _close
 +#endif
++#endif /* WIN32 */
  #endif /* POLARSSL_NET_C */
 --
