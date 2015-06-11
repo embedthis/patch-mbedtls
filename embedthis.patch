@@ -1,3 +1,77 @@
+diff --git a/LICENSE.md b/LICENSE.md
+new file mode 100644
+index 0000000..839ca44
+--- /dev/null
++++ b/LICENSE.md
+@@ -0,0 +1,20 @@
++MbedTLS Licenses
++===
++
++This software is distributed under GPL open source licenses.
++
++The GPL License does not generally permit incorporating this software into
++non-open source programs. Commercial licenses for this software and support
++services are available from Embedthis Software.
++
++* [GPL License](http://www.gnu.org/licenses/gpl-2.0.html)
++
++* [MbedTLS License](https://raw.githubusercontent.com/ARMmbed/mbedtls/development/LICENSE)
++
++Trademarks and Copyrights
++---
++Copyright (c) Arm Holdings Plc. All Rights Reserved.
++Copyright (c) Embedthis Software. All Rights Reserved.
++
++Embedthis is a trademarks of Embedthis Software, LLC.
++Other brands and their products are trademarks of their respective holders.
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..c97d28c
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,13 @@
++MbedTLS
++===
++
++Licensing
++---
++See LICENSE.md for details.
++
++### Prerequisites:
++    MakeMe (https://embedthis.com/makeme/download.html) for MakeMe to configure and build.
++
++### To Install:
++
++    pak install mbedtls
+diff --git a/dist/mbedtls.me b/dist/mbedtls.me
+new file mode 100644
+index 0000000..a790579
+--- /dev/null
++++ b/dist/mbedtls.me
+@@ -0,0 +1,23 @@
++/*
++    mbedtls.me -- MakeMe file for MbedTLS
++ */
++
++Me.load({
++    blend: [ 'osdep' ],
++
++    targets: {
++        libmbedtls: {
++            type: 'lib',
++            static: true,
++            headers: [ '*.h' ],
++            depends: [ 'osdep' ],
++            sources: [ 'mbedtlsLib.c' ],
++            '-compiler': [
++                '-Wall',
++                '-Wshorten-64-to-32',
++                '-W3',
++            ],
++            ifdef: [ 'mbedtls' ],
++        }
++	}
++})
 diff --git a/library/aes.c b/library/aes.c
 index 9d96064..a2a81f3 100644
 --- a/library/aes.c
@@ -436,6 +510,34 @@ index 5eb8ab1..d4dbc7c 100644
  
  #define MAGIC1       0xFF00AA55
  #define MAGIC2       0xEE119966
+diff --git a/library/net.c b/library/net.c
+index 1fb6884..b5f5260 100644
+--- a/library/net.c
++++ b/library/net.c
+@@ -55,6 +55,11 @@
+ #endif
+ #endif /* _MSC_VER */
+ 
++#if EMBEDTHIS || 1
++    #undef read
++    #undef write
++    #undef close
++#endif
+ #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
+ #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
+ #define close(fd)               closesocket(fd)
+@@ -583,4 +588,11 @@ void net_close( int fd )
+     close( fd );
+ }
+ 
++#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
++#if EMBEDTHIS || 1
++    #define read _read
++    #define write _write
++    #define close _close
++#endif
++#endif
+ #endif /* POLARSSL_NET_C */
 diff --git a/library/oid.c b/library/oid.c
 index b616d7e..e110c3a 100644
 --- a/library/oid.c
@@ -977,96 +1079,3 @@ index 0558b93..82a48b6 100644
  
  /*
   * 32-bit integer manipulation macros (big endian)
--- 
-
-diff --git a/LICENSE.md b/LICENSE.md
-new file mode 100644
-index 0000000..839ca44
---- /dev/null
-+++ b/LICENSE.md
-@@ -0,0 +1,20 @@
-+MbedTLS Licenses
-+===
-+
-+This software is distributed under GPL open source licenses.
-+
-+The GPL License does not generally permit incorporating this software into
-+non-open source programs. Commercial licenses for this software and support
-+services are available from Embedthis Software.
-+
-+* [GPL License](http://www.gnu.org/licenses/gpl-2.0.html)
-+
-+* [MbedTLS License](https://raw.githubusercontent.com/ARMmbed/mbedtls/development/LICENSE)
-+
-+Trademarks and Copyrights
-+---
-+Copyright (c) Arm Holdings Plc. All Rights Reserved.
-+Copyright (c) Embedthis Software. All Rights Reserved.
-+
-+Embedthis is a trademarks of Embedthis Software, LLC.
-+Other brands and their products are trademarks of their respective holders.
-diff --git a/README.md b/README.md
-new file mode 100644
-index 0000000..c97d28c
---- /dev/null
-+++ b/README.md
-@@ -0,0 +1,13 @@
-+MbedTLS
-+===
-+
-+Licensing
-+---
-+See LICENSE.md for details.
-+
-+### Prerequisites:
-+    MakeMe (https://embedthis.com/makeme/download.html) for MakeMe to configure and build.
-+
-+### To Install:
-+
-+    pak install mbedtls
-diff --git a/dist/mbedtls.me b/dist/mbedtls.me
-new file mode 100644
-index 0000000..a790579
---- /dev/null
-+++ b/dist/mbedtls.me
-@@ -0,0 +1,23 @@
-+/*
-+    mbedtls.me -- MakeMe file for MbedTLS
-+ */
-+
-+Me.load({
-+    blend: [ 'osdep' ],
-+
-+    targets: {
-+        libmbedtls: {
-+            type: 'lib',
-+            static: true,
-+            headers: [ '*.h' ],
-+            depends: [ 'osdep' ],
-+            sources: [ 'mbedtlsLib.c' ],
-+            '-compiler': [
-+                '-Wall',
-+                '-Wshorten-64-to-32',
-+                '-W3',
-+            ],
-+            ifdef: [ 'mbedtls' ],
-+        }
-+	}
-+})
-diff --git a/library/net.c b/library/net.c
-index 265897d..b5f5260 100644
---- a/library/net.c
-+++ b/library/net.c
-@@ -588,9 +588,11 @@ void net_close( int fd )
-     close( fd );
- }
-
-+#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
- #if EMBEDTHIS || 1
-     #define read _read
-     #define write _write
-     #define close _close
- #endif
-+#endif
- #endif /* POLARSSL_NET_C */
---
