@@ -1080,6 +1080,5 @@ index 1fb6884..265897d 100644
 +    #define close _close
 +#endif
 +#endif
-+ #endif /* POLARSSL_NET_C */
-+--
+ #endif /* POLARSSL_NET_C */
 --
