@@ -22,6 +22,9 @@
 #if ME_CPU_ARCH == ME_CPU_X86 || ME_CPU_ARCH == ME_CPU_X64
     #define POLARSSL_HAVE_SSE2
 #endif
+#if VXWORKS
+    #undef POLARSSL_HAVE_TIME
+#endif
 
 /*
     Map MakeMe configuration into MbedTLS defines
