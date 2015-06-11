@@ -881,7 +881,7 @@ index 5eb8ab1..d4dbc7c 100644
  #define MAGIC1       0xFF00AA55
  #define MAGIC2       0xEE119966
 diff --git a/library/net.c b/library/net.c
-index 1fb6884..edb4d67 100644
+index 1fb6884..3aede45 100644
 --- a/library/net.c
 +++ b/library/net.c
 @@ -55,6 +55,11 @@
@@ -914,7 +914,19 @@ index 1fb6884..edb4d67 100644
  #include <inttypes.h>
  #endif
  
-@@ -335,8 +340,12 @@ int net_bind( int *fd, const char *bind_ip, int port )
+@@ -292,7 +297,11 @@ int net_bind( int *fd, const char *bind_ip, int port )
+ 
+         n = 1;
+         if( setsockopt( *fd, SOL_SOCKET, SO_REUSEADDR,
++#if VXWORKS
++                        (char *) &n, sizeof( n ) ) != 0 )
++#else
+                         (const char *) &n, sizeof( n ) ) != 0 )
++#endif
+         {
+             close( *fd );
+             ret = POLARSSL_ERR_NET_SOCKET_FAILED;
+@@ -335,8 +344,12 @@ int net_bind( int *fd, const char *bind_ip, int port )
          return( POLARSSL_ERR_NET_SOCKET_FAILED );
  
      n = 1;
@@ -927,7 +939,7 @@ index 1fb6884..edb4d67 100644
  
      server_addr.sin_addr.s_addr = net_htonl( INADDR_ANY );
      server_addr.sin_family      = AF_INET;
-@@ -549,7 +558,11 @@ int net_recv( void *ctx, unsigned char *buf, size_t len )
+@@ -549,7 +562,11 @@ int net_recv( void *ctx, unsigned char *buf, size_t len )
  int net_send( void *ctx, const unsigned char *buf, size_t len )
  {
      int fd = *((int *) ctx);
@@ -939,7 +951,7 @@ index 1fb6884..edb4d67 100644
  
      if( ret < 0 )
      {
-@@ -583,4 +596,14 @@ void net_close( int fd )
+@@ -583,4 +600,14 @@ void net_close( int fd )
      close( fd );
  }
  
