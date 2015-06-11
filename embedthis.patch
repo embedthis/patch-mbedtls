@@ -138,6 +138,19 @@ index e4f46eb..5886941 100644
  
  /*
   * ASN.1 DER decoding routines
+diff --git a/library/base64.c b/library/base64.c
+index ac922a4..9414f27 100644
+--- a/library/base64.c
++++ b/library/base64.c
+@@ -33,7 +33,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
 diff --git a/library/bignum.c b/library/bignum.c
 index f479bc9..316fbed 100644
 --- a/library/bignum.c
@@ -660,7 +673,7 @@ index 5eb8ab1..d4dbc7c 100644
  #define MAGIC1       0xFF00AA55
  #define MAGIC2       0xEE119966
 diff --git a/library/net.c b/library/net.c
-index 1fb6884..b9c04b8 100644
+index 1fb6884..4407f82 100644
 --- a/library/net.c
 +++ b/library/net.c
 @@ -55,6 +55,11 @@
@@ -675,6 +688,24 @@ index 1fb6884..b9c04b8 100644
  #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
  #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
  #define close(fd)               closesocket(fd)
+@@ -86,7 +91,7 @@ static int wsa_init_done = 0;
+ #include <sys/isa_defs.h>
+ #elif defined(_AIX) || defined(HAVE_ARPA_NAMESER_COMPAT_H)
+ #include <arpa/nameser_compat.h>
+-#else
++#elif !VXWORKS
+ #include <endian.h>
+ #endif
+ 
+@@ -107,7 +112,7 @@ static int wsa_init_done = 0;
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
 @@ -583,4 +588,14 @@ void net_close( int fd )
      close( fd );
  }
@@ -953,9 +984,18 @@ index 0fee1e6..76325e8 100644
 +
  #endif /* POLARSSL_SSL_TLS_C */
 diff --git a/library/ssl_cli.c b/library/ssl_cli.c
-index caeb6f3..d3f8717 100644
+index caeb6f3..20d75b1 100644
 --- a/library/ssl_cli.c
 +++ b/library/ssl_cli.c
+@@ -44,7 +44,7 @@
+ #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
+ #include <basetsd.h>
+ typedef UINT32 uint32_t;
+-#else
++#elif !VXWORKS
+ #include <inttypes.h>
+ #endif
+ 
 @@ -54,10 +54,31 @@ typedef UINT32 uint32_t;
  
  #if defined(POLARSSL_SSL_SESSION_TICKETS)
