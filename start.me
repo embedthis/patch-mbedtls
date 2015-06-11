@@ -85,7 +85,7 @@ Me.load({
             to:         'dist/mbedtls.h',
             append:     true,
             filter:     /^#include.*\"/mg,
-            header:     '/*\n * ${settings.title} Library Header\n */\n\n#include \"me.h\"\n\n#if ME_COM_MBEDTLS\n\n#define EMBEDTHIS 1\n\n',
+            header:     '/*\n * ${settings.title} Library Header\n */\n\n#include \"me.h\"\n#include \"osdep.h\"\n\n\n#if ME_COM_MBEDTLS\n\n#define EMBEDTHIS 1\n\n',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
