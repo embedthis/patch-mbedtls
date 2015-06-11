@@ -1337,6 +1337,20 @@ index f079adc..2d81895 100644
  
  #if defined(POLARSSL_SSL_MAX_FRAGMENT_LENGTH)
  /*
+diff --git a/library/timing.c b/library/timing.c
+index 5d58f52..e805834 100644
+--- a/library/timing.c
++++ b/library/timing.c
+@@ -51,7 +51,9 @@ struct _hr_time
+ 
+ #include <unistd.h>
+ #include <sys/types.h>
++#if !VXWORKS
+ #include <sys/time.h>
++#endif
+ #include <signal.h>
+ #include <time.h>
+ 
 diff --git a/library/x509.c b/library/x509.c
 index ab105d8..fc01f6d 100644
 --- a/library/x509.c
