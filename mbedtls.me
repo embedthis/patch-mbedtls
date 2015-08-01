@@ -1,11 +1,13 @@
 /*
-    start.me - MbedTLS MakeMe file
+    mbedtls.me - MbedTLS MakeMe file
+
+    This is applied as a patch to a standard MbedTLS distribution
  */
 
 Me.load({
     targets: {
 
-        postcache: {
+        'pak-postcache': {
             depends: [ 'patch', 'combo' ],
         },
 
@@ -90,6 +92,7 @@ Me.load({
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
+
         'mbedtlsLib.c': {
             from:       'library/*.c', 
             to:         'dist/mbedtlsLib.c',
