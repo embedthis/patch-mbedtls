@@ -104,6 +104,4 @@
     #undef MBEDTLS_XTEA_C
 #endif
 
-#include "mbedtls-config.h"
-
 #endif /* _h_EMBEDTLS */
