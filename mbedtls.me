@@ -109,7 +109,7 @@ Me.load({
             ],
             append:     true,
             to:         'dist/mbedtls-config.h',
-            filter:     /^#inc.*mbedtls\/.*|^#include "check_config"|^#include MBEDTLS_CONFIG_FILE/mg,
+            filter:     /^#inc.*mbedtls\/.*|^#include "check_config.h"|^#include MBEDTLS_CONFIG_FILE/mg,
             header:     '/*\n *  ${settings.title} Configuration\n */',
             divider:    true,
         } 
