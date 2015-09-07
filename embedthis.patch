@@ -1,367 +1,89 @@
-diff --git a/dist/mbedtls.me b/dist/mbedtls.me
-new file mode 100644
-index 0000000..a790579
---- /dev/null
-+++ b/dist/mbedtls.me
-@@ -0,0 +1,23 @@
-+/*
-+    mbedtls.me -- MakeMe file for MbedTLS
-+ */
-+
-+Me.load({
-+    blend: [ 'osdep' ],
-+
-+    targets: {
-+        libmbedtls: {
-+            type: 'lib',
-+            static: true,
-+            headers: [ '*.h' ],
-+            depends: [ 'osdep' ],
-+            sources: [ 'mbedtlsLib.c' ],
-+            '-compiler': [
-+                '-Wall',
-+                '-Wshorten-64-to-32',
-+                '-W3',
-+            ],
-+            ifdef: [ 'mbedtls' ],
-+        }
-+	}
-+})
-diff --git a/include/polarssl/aes.h b/include/polarssl/aes.h
-index 8bcc039..9484983 100644
---- a/include/polarssl/aes.h
-+++ b/include/polarssl/aes.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/bignum.h b/include/polarssl/bignum.h
-index 8e1687b..9ed1b4e 100644
---- a/include/polarssl/bignum.h
-+++ b/include/polarssl/bignum.h
-@@ -49,7 +49,7 @@ typedef  INT32  int32_t;
- typedef  INT64  int64_t;
- typedef UINT32 uint32_t;
- typedef UINT64 uint64_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif /* _MSC_VER && !EFIX64 && !EFI32 */
- 
-diff --git a/include/polarssl/blowfish.h b/include/polarssl/blowfish.h
-index 21ba7d4..64eb915 100644
---- a/include/polarssl/blowfish.h
-+++ b/include/polarssl/blowfish.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/camellia.h b/include/polarssl/camellia.h
-index 03218d1..c00e920 100644
---- a/include/polarssl/camellia.h
-+++ b/include/polarssl/camellia.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/des.h b/include/polarssl/des.h
-index 3f7236c..4ea8668 100644
---- a/include/polarssl/des.h
-+++ b/include/polarssl/des.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/gcm.h b/include/polarssl/gcm.h
-index 5a94722..9a5db44 100644
---- a/include/polarssl/gcm.h
-+++ b/include/polarssl/gcm.h
-@@ -30,7 +30,7 @@
- #include <basetsd.h>
- typedef UINT32 uint32_t;
- typedef UINT64 uint64_t;
--#else
-+#elif !VXWORKS
- #include <stdint.h>
- #endif
- 
-diff --git a/include/polarssl/md4.h b/include/polarssl/md4.h
-index 68ac6c1..317f171 100644
---- a/include/polarssl/md4.h
-+++ b/include/polarssl/md4.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/md5.h b/include/polarssl/md5.h
-index d5ce136..223950d 100644
---- a/include/polarssl/md5.h
-+++ b/include/polarssl/md5.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/padlock.h b/include/polarssl/padlock.h
-index 55a0395..2ce0349 100644
---- a/include/polarssl/padlock.h
-+++ b/include/polarssl/padlock.h
-@@ -38,7 +38,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef INT32 int32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/pbkdf2.h b/include/polarssl/pbkdf2.h
-index 28987b3..ea46e1c 100644
---- a/include/polarssl/pbkdf2.h
-+++ b/include/polarssl/pbkdf2.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/pkcs5.h b/include/polarssl/pkcs5.h
-index 6a21af1..8b238e3 100644
---- a/include/polarssl/pkcs5.h
-+++ b/include/polarssl/pkcs5.h
-@@ -34,7 +34,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/ripemd160.h b/include/polarssl/ripemd160.h
-index 2555eb4..d852f19 100644
---- a/include/polarssl/ripemd160.h
-+++ b/include/polarssl/ripemd160.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/sha1.h b/include/polarssl/sha1.h
-index e9e5a8e..cfe5586 100644
---- a/include/polarssl/sha1.h
-+++ b/include/polarssl/sha1.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/sha256.h b/include/polarssl/sha256.h
-index f8917ff..91183a4 100644
---- a/include/polarssl/sha256.h
-+++ b/include/polarssl/sha256.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/sha512.h b/include/polarssl/sha512.h
-index 15d266c..ee0b7b2 100644
---- a/include/polarssl/sha512.h
-+++ b/include/polarssl/sha512.h
-@@ -34,7 +34,7 @@
- 
- #if defined(_MSC_VER) || defined(__WATCOMC__)
-   typedef unsigned __int64 uint64_t;
--#else
-+#elif !VXWORKS
-   #include <inttypes.h>
- #endif
- 
-diff --git a/include/polarssl/threading.h b/include/polarssl/threading.h
-index 293da38..d46ddda 100644
---- a/include/polarssl/threading.h
-+++ b/include/polarssl/threading.h
-@@ -66,6 +66,7 @@ int threading_set_alt( int (*mutex_init)( threading_mutex_t * ),
-                        int (*mutex_unlock)( threading_mutex_t * ) );
- #endif /* POLARSSL_THREADING_ALT_C */
- 
-+if defined(POLARSSL_THREADING_C)
- /*
-  * The function pointers for mutex_init, mutex_free, mutex_ and mutex_unlock
-  *
-@@ -75,6 +76,7 @@ extern int (*polarssl_mutex_init)( threading_mutex_t *mutex );
- extern int (*polarssl_mutex_free)( threading_mutex_t *mutex );
- extern int (*polarssl_mutex_lock)( threading_mutex_t *mutex );
- extern int (*polarssl_mutex_unlock)( threading_mutex_t *mutex );
-+#endif /* POLARSSL_THREADING_ALT_C)
- 
- #ifdef __cplusplus
- }
-diff --git a/include/polarssl/xtea.h b/include/polarssl/xtea.h
-index 02cd8d6..d97c23b 100644
---- a/include/polarssl/xtea.h
-+++ b/include/polarssl/xtea.h
-@@ -35,7 +35,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
 diff --git a/library/aes.c b/library/aes.c
-index 9d96064..a2a81f3 100644
+index ec9313d..3713dbf 100644
 --- a/library/aes.c
 +++ b/library/aes.c
-@@ -53,12 +53,18 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+@@ -52,6 +52,10 @@
+ #endif /* MBEDTLS_PLATFORM_C */
+ #endif /* MBEDTLS_SELF_TEST */
  
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#define FSb AESFSb
 +#endif
 +
- #if !defined(POLARSSL_AES_ALT)
+ #if !defined(MBEDTLS_AES_ALT)
  
-+#if EMBEDTHIS || 1
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
-     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
- }
-+#endif
+@@ -1487,4 +1491,8 @@ exit:
  
- /*
-  * 32-bit integer manipulation macros (little endian)
-@@ -1449,4 +1455,8 @@ exit:
+ #endif /* MBEDTLS_SELF_TEST */
  
- #endif /* POLARSSL_SELF_TEST */
- 
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#undef FSb
 +#endif
 +
- #endif /* POLARSSL_AES_C */
+ #endif /* MBEDTLS_AES_C */
 diff --git a/library/arc4.c b/library/arc4.c
-index 309d16a..0ef95a6 100644
+index ff0e993..ee47079 100644
 --- a/library/arc4.c
 +++ b/library/arc4.c
-@@ -48,10 +48,12 @@
+@@ -47,10 +47,12 @@
  
- #if !defined(POLARSSL_ARC4_ALT)
+ #if !defined(MBEDTLS_ARC4_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- void arc4_init( arc4_context *ctx )
+ void mbedtls_arc4_init( mbedtls_arc4_context *ctx )
  {
 diff --git a/library/asn1parse.c b/library/asn1parse.c
-index e4f46eb..5886941 100644
+index b37523d..13f3e1a 100644
 --- a/library/asn1parse.c
 +++ b/library/asn1parse.c
-@@ -44,10 +44,12 @@
- #define polarssl_free       free
+@@ -43,10 +43,12 @@
+ #define mbedtls_free       free
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
   * ASN.1 DER decoding routines
-diff --git a/library/base64.c b/library/base64.c
-index ac922a4..9414f27 100644
---- a/library/base64.c
-+++ b/library/base64.c
-@@ -33,7 +33,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
 diff --git a/library/bignum.c b/library/bignum.c
-index f479bc9..316fbed 100644
+index 15cbf73..404cc91 100644
 --- a/library/bignum.c
 +++ b/library/bignum.c
-@@ -50,10 +50,12 @@
- #define polarssl_free       free
+@@ -49,10 +49,12 @@
+ #define mbedtls_free       free
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #define ciL    (sizeof(t_uint))         /* chars in limb  */
+ #define ciL    (sizeof(mbedtls_mpi_uint))         /* chars in limb  */
  #define biL    (ciL << 3)               /* bits  in limb  */
 diff --git a/library/blowfish.c b/library/blowfish.c
-index 77191e7..5d0c099 100644
+index 89be4d1..d0c6ea7 100644
 --- a/library/blowfish.c
 +++ b/library/blowfish.c
-@@ -40,10 +40,12 @@
+@@ -39,10 +39,12 @@
  
- #if !defined(POLARSSL_BLOWFISH_ALT)
+ #if !defined(MBEDTLS_BLOWFISH_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -369,48 +91,48 @@ index 77191e7..5d0c099 100644
  /*
   * 32-bit integer manipulation macros (big endian)
 diff --git a/library/camellia.c b/library/camellia.c
-index d80f51f..8e1b1ec 100644
+index e015ca2..910b7ac 100644
 --- a/library/camellia.c
 +++ b/library/camellia.c
 @@ -46,12 +46,18 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_PLATFORM_C */
+ #endif /* MBEDTLS_SELF_TEST */
  
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#define FSb CAMELLIAFSb
 +#endif
 +
- #if !defined(POLARSSL_CAMELLIA_ALT)
+ #if !defined(MBEDTLS_CAMELLIA_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
   * 32-bit integer manipulation macros (big endian)
-@@ -1069,4 +1075,8 @@ int camellia_self_test( int verbose )
+@@ -1069,4 +1075,8 @@ int mbedtls_camellia_self_test( int verbose )
  
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#undef FSb
 +#endif
 +
- #endif /* POLARSSL_CAMELLIA_C */
+ #endif /* MBEDTLS_CAMELLIA_C */
 diff --git a/library/ccm.c b/library/ccm.c
-index e397e0a..d3b1bc4 100644
+index 3463a0b..7c0acc2 100644
 --- a/library/ccm.c
 +++ b/library/ccm.c
-@@ -50,10 +50,12 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST && POLARSSL_AES_C */
+@@ -49,10 +49,12 @@
+ #endif /* MBEDTLS_PLATFORM_C */
+ #endif /* MBEDTLS_SELF_TEST && MBEDTLS_AES_C */
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -418,16 +140,16 @@ index e397e0a..d3b1bc4 100644
  #define CCM_ENCRYPT 0
  #define CCM_DECRYPT 1
 diff --git a/library/cipher.c b/library/cipher.c
-index b69d331..d1f5f00 100644
+index ccc0685..37bc01a 100644
 --- a/library/cipher.c
 +++ b/library/cipher.c
-@@ -55,10 +55,15 @@
- #define strcasecmp _stricmp
+@@ -49,10 +49,15 @@
+ #define MBEDTLS_CIPHER_MODE_STREAM
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -437,43 +159,43 @@ index b69d331..d1f5f00 100644
  
  static int supported_init = 0;
  
-@@ -913,4 +918,8 @@ int cipher_self_test( int verbose )
- 
- #endif /* POLARSSL_SELF_TEST */
+@@ -883,4 +888,8 @@ int mbedtls_cipher_auth_decrypt( mbedtls_cipher_context_t *ctx,
+ }
+ #endif /* MBEDTLS_CIPHER_MODE_AEAD */
  
 +#if EMBEDTHIS
 +#undef supported_init
 +#endif
 +
- #endif /* POLARSSL_CIPHER_C */
+ #endif /* MBEDTLS_CIPHER_C */
 diff --git a/library/ctr_drbg.c b/library/ctr_drbg.c
-index 24adff0..307c8d0 100644
+index aefddfa..9bb4578 100644
 --- a/library/ctr_drbg.c
 +++ b/library/ctr_drbg.c
-@@ -50,10 +50,12 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+@@ -49,10 +49,12 @@
+ #endif /* MBEDTLS_PLATFORM_C */
+ #endif /* MBEDTLS_SELF_TEST */
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  * Non-public function wrapped by ctr_crbg_init(). Necessary to allow NIST
+  * CTR_DRBG context initialization
 diff --git a/library/des.c b/library/des.c
-index 080e113..37289c5 100644
+index 61f214a..17b187c 100644
 --- a/library/des.c
 +++ b/library/des.c
-@@ -49,10 +49,12 @@
+@@ -48,10 +48,12 @@
  
- #if !defined(POLARSSL_DES_ALT)
+ #if !defined(MBEDTLS_DES_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -481,199 +203,50 @@ index 080e113..37289c5 100644
  /*
   * 32-bit integer manipulation macros (big endian)
 diff --git a/library/dhm.c b/library/dhm.c
-index 0a4f820..efdeeae 100644
+index 0f4d316..bc27528 100644
 --- a/library/dhm.c
 +++ b/library/dhm.c
-@@ -55,10 +55,12 @@
- #define polarssl_free       free
+@@ -54,10 +54,12 @@
+ #define mbedtls_free       free
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  * helper to validate the mpi size and import it
+  * helper to validate the mbedtls_mpi size and import it
 diff --git a/library/ecp.c b/library/ecp.c
-index adef09e..5a5652c 100644
+index 858540b..7a492ae 100644
 --- a/library/ecp.c
 +++ b/library/ecp.c
-@@ -76,10 +76,12 @@
- #endif /* __ARMCC_VERSION */
- #endif /*_MSC_VER */
- 
-+#if !EMBEDTHIS
- /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
-     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
- }
-+#endif
- 
- #if defined(POLARSSL_SELF_TEST)
- /*
-diff --git a/library/ecp_curves.c b/library/ecp_curves.c
-index 3786356..5063081 100644
---- a/library/ecp_curves.c
-+++ b/library/ecp_curves.c
-@@ -852,7 +852,7 @@ static inline void carry64( t_uint *dst, t_uint *carry )
- 
- #define WIDTH       8 / sizeof( t_uint )
- #define A( i )      N->p + i * WIDTH
--#define ADD( i )    add64( p, A( i ), &c )
-+#define AD( i )    add64( p, A( i ), &c )
- #define NEXT        p += WIDTH; carry64( p, &c )
- #define LAST        p += WIDTH; *p = c; while( ++p < end ) *p = 0
- 
-@@ -871,9 +871,9 @@ static int ecp_mod_p192( mpi *N )
-     p = N->p;
-     end = p + N->n;
- 
--    ADD( 3 ); ADD( 5 );             NEXT; // A0 += A3 + A5
--    ADD( 3 ); ADD( 4 ); ADD( 5 );   NEXT; // A1 += A3 + A4 + A5
--    ADD( 4 ); ADD( 5 );             LAST; // A2 += A4 + A5
-+    AD( 3 ); AD( 5 );             NEXT; // A0 += A3 + A5
-+    AD( 3 ); AD( 4 ); AD( 5 );   NEXT; // A1 += A3 + A4 + A5
-+    AD( 4 ); AD( 5 );             LAST; // A2 += A4 + A5
- 
- cleanup:
-     return( ret );
-@@ -881,7 +881,7 @@ cleanup:
- 
- #undef WIDTH
- #undef A
--#undef ADD
-+#undef AD
- #undef NEXT
- #undef LAST
- #endif /* POLARSSL_ECP_DP_SECP192R1_ENABLED */
-@@ -962,7 +962,7 @@ static inline void sub32( uint32_t *dst, uint32_t src, signed char *carry )
-     *dst -= src;
- }
- 
--#define ADD( j )    add32( &cur, A( j ), &c );
-+#define AD( j )    add32( &cur, A( j ), &c );
- #define SUB( j )    sub32( &cur, A( j ), &c );
- 
- /*
-@@ -1037,10 +1037,10 @@ static int ecp_mod_p224( mpi *N )
-     SUB(  7 ); SUB( 11 );               NEXT; // A0 += -A7 - A11
-     SUB(  8 ); SUB( 12 );               NEXT; // A1 += -A8 - A12
-     SUB(  9 ); SUB( 13 );               NEXT; // A2 += -A9 - A13
--    SUB( 10 ); ADD(  7 ); ADD( 11 );    NEXT; // A3 += -A10 + A7 + A11
--    SUB( 11 ); ADD(  8 ); ADD( 12 );    NEXT; // A4 += -A11 + A8 + A12
--    SUB( 12 ); ADD(  9 ); ADD( 13 );    NEXT; // A5 += -A12 + A9 + A13
--    SUB( 13 ); ADD( 10 );               LAST; // A6 += -A13 + A10
-+    SUB( 10 ); AD(  7 ); AD( 11 );    NEXT; // A3 += -A10 + A7 + A11
-+    SUB( 11 ); AD(  8 ); AD( 12 );    NEXT; // A4 += -A11 + A8 + A12
-+    SUB( 12 ); AD(  9 ); AD( 13 );    NEXT; // A5 += -A12 + A9 + A13
-+    SUB( 13 ); AD( 10 );               LAST; // A6 += -A13 + A10
- 
- cleanup:
-     return( ret );
-@@ -1055,28 +1055,28 @@ static int ecp_mod_p256( mpi *N )
- {
-     INIT( 256 );
- 
--    ADD(  8 ); ADD(  9 );
-+    AD(  8 ); AD(  9 );
-     SUB( 11 ); SUB( 12 ); SUB( 13 ); SUB( 14 );             NEXT; // A0
- 
--    ADD(  9 ); ADD( 10 );
-+    AD(  9 ); AD( 10 );
-     SUB( 12 ); SUB( 13 ); SUB( 14 ); SUB( 15 );             NEXT; // A1
- 
--    ADD( 10 ); ADD( 11 );
-+    AD( 10 ); AD( 11 );
-     SUB( 13 ); SUB( 14 ); SUB( 15 );                        NEXT; // A2
- 
--    ADD( 11 ); ADD( 11 ); ADD( 12 ); ADD( 12 ); ADD( 13 );
-+    AD( 11 ); AD( 11 ); AD( 12 ); AD( 12 ); AD( 13 );
-     SUB( 15 ); SUB(  8 ); SUB(  9 );                        NEXT; // A3
- 
--    ADD( 12 ); ADD( 12 ); ADD( 13 ); ADD( 13 ); ADD( 14 );
-+    AD( 12 ); AD( 12 ); AD( 13 ); AD( 13 ); AD( 14 );
-     SUB(  9 ); SUB( 10 );                                   NEXT; // A4
- 
--    ADD( 13 ); ADD( 13 ); ADD( 14 ); ADD( 14 ); ADD( 15 );
-+    AD( 13 ); AD( 13 ); AD( 14 ); AD( 14 ); AD( 15 );
-     SUB( 10 ); SUB( 11 );                                   NEXT; // A5
- 
--    ADD( 14 ); ADD( 14 ); ADD( 15 ); ADD( 15 ); ADD( 14 ); ADD( 13 );
-+    AD( 14 ); AD( 14 ); AD( 15 ); AD( 15 ); AD( 14 ); AD( 13 );
-     SUB(  8 ); SUB(  9 );                                   NEXT; // A6
- 
--    ADD( 15 ); ADD( 15 ); ADD( 15 ); ADD( 8 );
-+    AD( 15 ); AD( 15 ); AD( 15 ); AD( 8 );
-     SUB( 10 ); SUB( 11 ); SUB( 12 ); SUB( 13 );             LAST; // A7
- 
- cleanup:
-@@ -1092,40 +1092,40 @@ static int ecp_mod_p384( mpi *N )
- {
-     INIT( 384 );
- 
--    ADD( 12 ); ADD( 21 ); ADD( 20 );
-+    AD( 12 ); AD( 21 ); AD( 20 );
-     SUB( 23 );                                              NEXT; // A0
- 
--    ADD( 13 ); ADD( 22 ); ADD( 23 );
-+    AD( 13 ); AD( 22 ); AD( 23 );
-     SUB( 12 ); SUB( 20 );                                   NEXT; // A2
- 
--    ADD( 14 ); ADD( 23 );
-+    AD( 14 ); AD( 23 );
-     SUB( 13 ); SUB( 21 );                                   NEXT; // A2
- 
--    ADD( 15 ); ADD( 12 ); ADD( 20 ); ADD( 21 );
-+    AD( 15 ); AD( 12 ); AD( 20 ); AD( 21 );
-     SUB( 14 ); SUB( 22 ); SUB( 23 );                        NEXT; // A3
- 
--    ADD( 21 ); ADD( 21 ); ADD( 16 ); ADD( 13 ); ADD( 12 ); ADD( 20 ); ADD( 22 );
-+    AD( 21 ); AD( 21 ); AD( 16 ); AD( 13 ); AD( 12 ); AD( 20 ); AD( 22 );
-     SUB( 15 ); SUB( 23 ); SUB( 23 );                        NEXT; // A4
- 
--    ADD( 22 ); ADD( 22 ); ADD( 17 ); ADD( 14 ); ADD( 13 ); ADD( 21 ); ADD( 23 );
-+    AD( 22 ); AD( 22 ); AD( 17 ); AD( 14 ); AD( 13 ); AD( 21 ); AD( 23 );
-     SUB( 16 );                                              NEXT; // A5
- 
--    ADD( 23 ); ADD( 23 ); ADD( 18 ); ADD( 15 ); ADD( 14 ); ADD( 22 );
-+    AD( 23 ); AD( 23 ); AD( 18 ); AD( 15 ); AD( 14 ); AD( 22 );
-     SUB( 17 );                                              NEXT; // A6
- 
--    ADD( 19 ); ADD( 16 ); ADD( 15 ); ADD( 23 );
-+    AD( 19 ); AD( 16 ); AD( 15 ); AD( 23 );
-     SUB( 18 );                                              NEXT; // A7
- 
--    ADD( 20 ); ADD( 17 ); ADD( 16 );
-+    AD( 20 ); AD( 17 ); AD( 16 );
-     SUB( 19 );                                              NEXT; // A8
- 
--    ADD( 21 ); ADD( 18 ); ADD( 17 );
-+    AD( 21 ); AD( 18 ); AD( 17 );
-     SUB( 20 );                                              NEXT; // A9
- 
--    ADD( 22 ); ADD( 19 ); ADD( 18 );
-+    AD( 22 ); AD( 19 ); AD( 18 );
-     SUB( 21 );                                              NEXT; // A10
- 
--    ADD( 23 ); ADD( 20 ); ADD( 19 );
-+    AD( 23 ); AD( 20 ); AD( 19 );
-     SUB( 22 );                                              LAST; // A11
- 
- cleanup:
-diff --git a/library/entropy.c b/library/entropy.c
-index c90c7e4..f0d143e 100644
---- a/library/entropy.c
-+++ b/library/entropy.c
-@@ -50,10 +50,12 @@
- #include "polarssl/havege.h"
+@@ -66,10 +66,12 @@
+ #define inline __inline
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
++#endif
+ 
+ #if defined(MBEDTLS_SELF_TEST)
+ /*
+diff --git a/library/entropy.c b/library/entropy.c
+index cdbd35c..cde93e2 100644
+--- a/library/entropy.c
++++ b/library/entropy.c
+@@ -49,10 +49,12 @@
+ #include "mbedtls/havege.h"
+ #endif
+ 
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -681,33 +254,33 @@ index c90c7e4..f0d143e 100644
  #define ENTROPY_MAX_LOOP    256     /**< Maximum amount to loop before error */
  
 diff --git a/library/gcm.c b/library/gcm.c
-index b537b02..92c106d 100644
+index 4298254..3f3c6b3 100644
 --- a/library/gcm.c
 +++ b/library/gcm.c
-@@ -78,10 +78,12 @@
+@@ -77,10 +77,12 @@
  }
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  * Precompute small multiples of H, that is set
+  * Initialize a context
 diff --git a/library/havege.c b/library/havege.c
-index fe65699..d3d7d69 100644
+index 7623bc0..523d15e 100644
 --- a/library/havege.c
 +++ b/library/havege.c
-@@ -40,10 +40,12 @@
+@@ -39,10 +39,12 @@
  
  #include <string.h>
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -715,104 +288,93 @@ index fe65699..d3d7d69 100644
  /* ------------------------------------------------------------------------
   * On average, one iteration accesses two 8-word blocks in the havege WALK
 diff --git a/library/hmac_drbg.c b/library/hmac_drbg.c
-index c7904d0..84f782c 100644
+index bf5f9b5..ce88593 100644
 --- a/library/hmac_drbg.c
 +++ b/library/hmac_drbg.c
-@@ -51,10 +51,12 @@
- #endif /* POLARSSL_SELF_TEST */
- #endif /* POLARSSL_PLATFORM_C */
+@@ -50,10 +50,12 @@
+ #endif /* MBEDTLS_SELF_TEST */
+ #endif /* MBEDTLS_PLATFORM_C */
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  * HMAC_DRBG update, using optional additional data (10.1.2.2)
+  * HMAC_DRBG context initialization
 diff --git a/library/md.c b/library/md.c
-index cf4d7e3..d9cbb48 100644
+index eda98f6..ec41224 100644
 --- a/library/md.c
 +++ b/library/md.c
-@@ -43,10 +43,12 @@
- #define strcasecmp  _stricmp
+@@ -48,10 +48,12 @@
+ #include <stdio.h>
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- static const int supported_digests[] = {
- 
+ /*
+  * Reminder: update profiles in x509_crt.c when adding a new hash!
 diff --git a/library/md2.c b/library/md2.c
-index 17569c0..509aac9 100644
+index 8976701..337035a 100644
 --- a/library/md2.c
 +++ b/library/md2.c
-@@ -51,10 +51,12 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+@@ -48,10 +48,12 @@
+ 
+ #if !defined(MBEDTLS_MD2_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if !defined(POLARSSL_MD2_ALT)
- 
+ static const unsigned char PI_SUBST[256] =
+ {
 diff --git a/library/md4.c b/library/md4.c
-index d33cc52..550140f 100644
+index 11a77e3..6aa3258 100644
 --- a/library/md4.c
 +++ b/library/md4.c
-@@ -51,10 +51,12 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+@@ -48,10 +48,12 @@
+ 
+ #if !defined(MBEDTLS_MD4_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if !defined(POLARSSL_MD4_ALT)
- 
-@@ -493,4 +495,10 @@ int md4_self_test( int verbose )
- 
- #endif /* POLARSSL_SELF_TEST */
- 
-+#if EMBEDTHIS || 1
-+#undef F
-+#undef P
-+#undef S
-+#endif
-+
- #endif /* POLARSSL_MD4_C */
+ /*
+  * 32-bit integer manipulation macros (little endian)
 diff --git a/library/md5.c b/library/md5.c
-index 49f0674..300c973 100644
+index 5d972dc..f4b065e 100644
 --- a/library/md5.c
 +++ b/library/md5.c
-@@ -50,10 +50,12 @@
- #endif /* POLARSSL_PLATFORM_C */
- #endif /* POLARSSL_SELF_TEST */
+@@ -47,10 +47,12 @@
+ 
+ #if !defined(MBEDTLS_MD5_ALT)
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if !defined(POLARSSL_MD5_ALT)
+ /*
+  * 32-bit integer manipulation macros (little endian)
+@@ -401,4 +403,10 @@ int mbedtls_md5_self_test( int verbose )
  
-@@ -614,4 +616,10 @@ int md5_self_test( int verbose )
- 
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
 +#if EMBEDTHIS || 1
 +#undef F
@@ -820,35 +382,18 @@ index 49f0674..300c973 100644
 +#undef S
 +#endif
 +
- #endif /* POLARSSL_MD5_C */
-diff --git a/library/md_wrap.c b/library/md_wrap.c
-index f554333..e814a7c 100644
---- a/library/md_wrap.c
-+++ b/library/md_wrap.c
-@@ -70,10 +70,12 @@
- #define polarssl_free       free
- #endif
- 
-+#if !EMBEDTHIS
- /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
-     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
- }
-+#endif
- 
- #if defined(POLARSSL_MD2_C)
- 
+ #endif /* MBEDTLS_MD5_C */
 diff --git a/library/memory_buffer_alloc.c b/library/memory_buffer_alloc.c
-index 5eb8ab1..d4dbc7c 100644
+index b2c775a..0944948 100644
 --- a/library/memory_buffer_alloc.c
 +++ b/library/memory_buffer_alloc.c
-@@ -43,10 +43,12 @@
- #include "polarssl/threading.h"
+@@ -42,10 +42,12 @@
+ #include "mbedtls/threading.h"
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -856,82 +401,28 @@ index 5eb8ab1..d4dbc7c 100644
  #define MAGIC1       0xFF00AA55
  #define MAGIC2       0xEE119966
 diff --git a/library/net.c b/library/net.c
-index 1fb6884..3aede45 100644
+index b892df9..4fe6e3e 100644
 --- a/library/net.c
 +++ b/library/net.c
-@@ -55,6 +55,11 @@
+@@ -52,6 +52,12 @@
  #endif
  #endif /* _MSC_VER */
  
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +    #undef read
 +    #undef write
 +    #undef close
 +#endif
++
  #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
  #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
  #define close(fd)               closesocket(fd)
-@@ -86,7 +91,7 @@ static int wsa_init_done = 0;
- #include <sys/isa_defs.h>
- #elif defined(_AIX) || defined(HAVE_ARPA_NAMESER_COMPAT_H)
- #include <arpa/nameser_compat.h>
--#else
-+#elif !VXWORKS
- #include <endian.h>
- #endif
- 
-@@ -107,7 +112,7 @@ static int wsa_init_done = 0;
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
- #endif
- 
-@@ -292,7 +297,11 @@ int net_bind( int *fd, const char *bind_ip, int port )
- 
-         n = 1;
-         if( setsockopt( *fd, SOL_SOCKET, SO_REUSEADDR,
-+#if VXWORKS
-+                        (char *) &n, sizeof( n ) ) != 0 )
-+#else
-                         (const char *) &n, sizeof( n ) ) != 0 )
-+#endif
-         {
-             close( *fd );
-             ret = POLARSSL_ERR_NET_SOCKET_FAILED;
-@@ -335,8 +344,12 @@ int net_bind( int *fd, const char *bind_ip, int port )
-         return( POLARSSL_ERR_NET_SOCKET_FAILED );
- 
-     n = 1;
-+#if VXWORKS
-+    setsockopt( *fd, SOL_SOCKET, SO_REUSEADDR, (char *) &n, sizeof( n ) );
-+#else
-     setsockopt( *fd, SOL_SOCKET, SO_REUSEADDR,
-                 (const char *) &n, sizeof( n ) );
-+#endif
- 
-     server_addr.sin_addr.s_addr = net_htonl( INADDR_ANY );
-     server_addr.sin_family      = AF_INET;
-@@ -549,7 +562,11 @@ int net_recv( void *ctx, unsigned char *buf, size_t len )
- int net_send( void *ctx, const unsigned char *buf, size_t len )
- {
-     int fd = *((int *) ctx);
-+#if VXWORKS
-+    int ret = (int) write( fd, (char*) buf, len );
-+#else
-     int ret = (int) write( fd, buf, len );
-+#endif
- 
-     if( ret < 0 )
-     {
-@@ -583,4 +600,14 @@ void net_close( int fd )
-     close( fd );
+@@ -572,4 +578,15 @@ void mbedtls_net_free( mbedtls_net_context *ctx )
+     ctx->fd = -1;
  }
  
 +#if (defined(_WIN32) || defined(_WIN32_WCE)) && !defined(EFIX64) && !defined(EFI32)
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +    #undef read
 +    #undef write
 +    #undef close
@@ -940,12 +431,13 @@ index 1fb6884..3aede45 100644
 +    #define close _close
 +#endif
 +#endif
- #endif /* POLARSSL_NET_C */
++
+ #endif /* MBEDTLS_NET_C */
 diff --git a/library/oid.c b/library/oid.c
-index b616d7e..e110c3a 100644
+index 1bd47d7..0a3fe3a 100644
 --- a/library/oid.c
 +++ b/library/oid.c
-@@ -689,4 +689,8 @@ int oid_get_numeric_string( char *buf, size_t size,
+@@ -647,4 +647,8 @@ int mbedtls_oid_get_numeric_string( char *buf, size_t size,
      return( (int) ( size - n ) );
  }
  
@@ -953,86 +445,87 @@ index b616d7e..e110c3a 100644
 +#undef SAFE_SNPRINTF
 +#endif
 +
- #endif /* POLARSSL_OID_C */
+ #endif /* MBEDTLS_OID_C */
 diff --git a/library/pem.c b/library/pem.c
-index 68be8fd..33e80bd 100644
+index 541e870..48fb88a 100644
 --- a/library/pem.c
 +++ b/library/pem.c
-@@ -45,10 +45,12 @@
- #define polarssl_free       free
+@@ -44,10 +44,12 @@
+ #define mbedtls_free       free
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if defined(POLARSSL_PEM_PARSE_C)
- void pem_init( pem_context *ctx )
+ #if defined(MBEDTLS_PEM_PARSE_C)
+ void mbedtls_pem_init( mbedtls_pem_context *ctx )
 diff --git a/library/pk.c b/library/pk.c
-index 4d78b57..e1f5677 100644
+index 10bd0a5..1af970d 100644
 --- a/library/pk.c
 +++ b/library/pk.c
-@@ -40,10 +40,12 @@
- #include "polarssl/ecdsa.h"
+@@ -39,10 +39,12 @@
+ #include "mbedtls/ecdsa.h"
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  * Initialise a pk_context
+  * Initialise a mbedtls_pk_context
 diff --git a/library/pk_wrap.c b/library/pk_wrap.c
-index 6068605..270d0be 100644
+index 712ad48..ec814f3 100644
 --- a/library/pk_wrap.c
 +++ b/library/pk_wrap.c
-@@ -50,10 +50,12 @@
- #define polarssl_free       free
+@@ -50,11 +50,13 @@
  #endif
  
+ #if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
+ #endif
 +#endif
  
- #if defined(POLARSSL_RSA_C)
- static int rsa_can_do( pk_type_t type )
+ #if defined(MBEDTLS_RSA_C)
+ static int rsa_can_do( mbedtls_pk_type_t type )
 diff --git a/library/pkcs12.c b/library/pkcs12.c
-index f84fd52..f4cefa3 100644
+index f1777eb..f80bdb3 100644
 --- a/library/pkcs12.c
 +++ b/library/pkcs12.c
-@@ -48,10 +48,12 @@
- #include "polarssl/des.h"
+@@ -47,10 +47,12 @@
+ #include "mbedtls/des.h"
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- static int pkcs12_parse_pbe_params( asn1_buf *params,
-                                     asn1_buf *salt, int *iterations )
+ static int pkcs12_parse_pbe_params( mbedtls_asn1_buf *params,
+                                     mbedtls_asn1_buf *salt, int *iterations )
 diff --git a/library/pkparse.c b/library/pkparse.c
-index 39c51f6..3073d27 100644
+index bddcf5d..c8d7fb5 100644
 --- a/library/pkparse.c
 +++ b/library/pkparse.c
-@@ -62,10 +62,12 @@
+@@ -61,10 +61,12 @@
  #endif
  
- #if defined(POLARSSL_FS_IO)
+ #if defined(MBEDTLS_FS_IO)
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
@@ -1040,33 +533,25 @@ index 39c51f6..3073d27 100644
  /*
   * Load all data from a file into a given buffer.
 diff --git a/library/ripemd160.c b/library/ripemd160.c
-index 2c196f4..88ae458 100644
+index a55cc3e..eb6463c 100644
 --- a/library/ripemd160.c
 +++ b/library/ripemd160.c
-@@ -74,10 +74,12 @@
+@@ -69,10 +69,12 @@
  }
  #endif
  
 +#if !EMBEDTHIS
  /* Implementation that should never be optimized out by the compiler */
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- void ripemd160_init( ripemd160_context *ctx )
+ void mbedtls_ripemd160_init( mbedtls_ripemd160_context *ctx )
  {
-@@ -145,6 +147,7 @@ void ripemd160_process( ripemd160_context *ctx, const unsigned char data[64] )
+@@ -461,4 +463,17 @@ int mbedtls_ripemd160_self_test( int verbose )
  
- #define S( x, n ) ( ( x << n ) | ( x >> (32 - n) ) )
- 
-+
- #define P( a, b, c, d, e, r, s, f, k )      \
-     a += f( b, c, d ) + X[r] + k;           \
-     a = S( a, s ) + e;                      \
-@@ -648,4 +651,16 @@ int ripemd160_self_test( int verbose )
- 
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
 +#if EMBEDTHIS || 1
 +#undef F
@@ -1080,26 +565,28 @@ index 2c196f4..88ae458 100644
 +#undef S
 +#endif
 +
- #endif /* POLARSSL_RIPEMD160_C */
++
+ #endif /* MBEDTLS_RIPEMD160_C */
 diff --git a/library/sha1.c b/library/sha1.c
-index fca6109..878f8ab 100644
+index 8c77cba..f6394ca 100644
 --- a/library/sha1.c
 +++ b/library/sha1.c
-@@ -51,9 +51,11 @@
- #endif /* POLARSSL_SELF_TEST */
+@@ -47,10 +47,12 @@
  
- /* Implementation that should never be optimized out by the compiler */
+ #if !defined(MBEDTLS_SHA1_ALT)
+ 
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if !defined(POLARSSL_SHA1_ALT)
+ /*
+  * 32-bit integer manipulation macros (big endian)
+@@ -445,4 +447,11 @@ exit:
  
-@@ -660,4 +662,11 @@ exit:
- 
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
 +#if EMBEDTHIS || 1
 +#undef F
@@ -1108,29 +595,39 @@ index fca6109..878f8ab 100644
 +#undef S
 +#endif
 +
- #endif /* POLARSSL_SHA1_C */
+ #endif /* MBEDTLS_SHA1_C */
 diff --git a/library/sha256.c b/library/sha256.c
-index 2b4b7e1..46d67c1 100644
+index 4e82c0b..ac2826b 100644
 --- a/library/sha256.c
 +++ b/library/sha256.c
-@@ -51,9 +51,12 @@
- #endif /* POLARSSL_SELF_TEST */
+@@ -47,10 +47,12 @@
  
- /* Implementation that should never be optimized out by the compiler */
+ #if !defined(MBEDTLS_SHA256_ALT)
+ 
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
-+
  
- #if !defined(POLARSSL_SHA256_ALT)
+ /*
+  * 32-bit integer manipulation macros (big endian)
+@@ -131,6 +133,9 @@ void mbedtls_sha256_starts( mbedtls_sha256_context *ctx, int is224 )
+ }
  
-@@ -741,4 +744,17 @@ exit:
+ #if !defined(MBEDTLS_SHA256_PROCESS_ALT)
++#if EMBEDTHIS
++#define K K256
++#endif
+ static const uint32_t K[] =
+ {
+     0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
+@@ -442,4 +447,18 @@ exit:
  
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#undef P
 +#undef R
 +#undef SHR
@@ -1141,30 +638,42 @@ index 2b4b7e1..46d67c1 100644
 +#undef S3
 +#undef F0
 +#undef F1
++#undef K
 +#endif
 +
- #endif /* POLARSSL_SHA256_C */
+ #endif /* MBEDTLS_SHA256_C */
 diff --git a/library/sha512.c b/library/sha512.c
-index 4074d33..8b22729 100644
+index af610bb..caca8f7 100644
 --- a/library/sha512.c
 +++ b/library/sha512.c
-@@ -57,9 +57,11 @@
- #endif /* POLARSSL_SELF_TEST */
+@@ -53,10 +53,12 @@
  
- /* Implementation that should never be optimized out by the compiler */
+ #if !defined(MBEDTLS_SHA512_ALT)
+ 
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if !defined(POLARSSL_SHA512_ALT)
+ /*
+  * 64-bit integer manipulation macros (big endian)
+@@ -92,6 +94,9 @@ static void mbedtls_zeroize( void *v, size_t n ) {
+ /*
+  * Round constants
+  */
++#if EMBEDTHIS
++#define K K512
++#endif
+ static const uint64_t K[80] =
+ {
+     UL64(0x428A2F98D728AE22),  UL64(0x7137449123EF65CD),
+@@ -497,4 +502,18 @@ exit:
  
-@@ -801,4 +803,17 @@ exit:
+ #endif /* MBEDTLS_SELF_TEST */
  
- #endif /* POLARSSL_SELF_TEST */
- 
-+#if EMBEDTHIS || 1
++#if EMBEDTHIS
 +#undef P
 +#undef R
 +#undef SHR
@@ -1175,14 +684,15 @@ index 4074d33..8b22729 100644
 +#undef S3
 +#undef F0
 +#undef F1
++#undef K
 +#endif
 +
- #endif /* POLARSSL_SHA512_C */
+ #endif /* MBEDTLS_SHA512_C */
 diff --git a/library/ssl_ciphersuites.c b/library/ssl_ciphersuites.c
-index 0fee1e6..76325e8 100644
+index 8bad7ab..6e69348 100644
 --- a/library/ssl_ciphersuites.c
 +++ b/library/ssl_ciphersuites.c
-@@ -1688,6 +1688,11 @@ const int *ssl_list_ciphersuites( void )
+@@ -1682,6 +1682,11 @@ const int *mbedtls_ssl_list_ciphersuites( void )
  #define MAX_CIPHERSUITES    sizeof( ciphersuite_definitions     ) /         \
                              sizeof( ciphersuite_definitions[0]  )
  static int supported_ciphersuites[MAX_CIPHERSUITES];
@@ -1193,35 +703,27 @@ index 0fee1e6..76325e8 100644
 +
  static int supported_init = 0;
  
- const int *ssl_list_ciphersuites( void )
-@@ -1840,4 +1845,8 @@ int ssl_ciphersuite_uses_psk( const ssl_ciphersuite_t *info )
+ const int *mbedtls_ssl_list_ciphersuites( void )
+@@ -1834,4 +1839,8 @@ int mbedtls_ssl_ciphersuite_uses_psk( const mbedtls_ssl_ciphersuite_t *info )
  }
- #endif /* POLARSSL_KEY_EXCHANGE__SOME__PSK_ENABLED */
+ #endif /* MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED */
  
-+#if !EMBEDTHIS
++#if EMBEDTHIS
 +#undef supported_init
 +#endif
 +
- #endif /* POLARSSL_SSL_TLS_C */
+ #endif /* MBEDTLS_SSL_TLS_C */
 diff --git a/library/ssl_cli.c b/library/ssl_cli.c
-index caeb6f3..20d75b1 100644
+index 5a9c432..d0ddf6c 100644
 --- a/library/ssl_cli.c
 +++ b/library/ssl_cli.c
-@@ -44,7 +44,7 @@
- #if defined(_MSC_VER) && !defined(EFIX64) && !defined(EFI32)
- #include <basetsd.h>
- typedef UINT32 uint32_t;
--#else
-+#elif !VXWORKS
- #include <inttypes.h>
+@@ -48,11 +48,32 @@
  #endif
  
-@@ -54,10 +54,31 @@ typedef UINT32 uint32_t;
- 
- #if defined(POLARSSL_SSL_SESSION_TICKETS)
- /* Implementation that should never be optimized out by the compiler */
+ #if defined(MBEDTLS_SSL_SESSION_TICKETS)
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
  #endif
@@ -1246,9 +748,9 @@ index caeb6f3..20d75b1 100644
 +#define ssl_get_ecdh_params_from_cert cli_ssl_get_ecdh_params_from_cert
 +#endif
  
- #if defined(POLARSSL_SSL_SERVER_NAME_INDICATION)
- static void ssl_write_hostname_ext( ssl_context *ssl,
-@@ -2851,4 +2872,24 @@ int ssl_handshake_client_step( ssl_context *ssl )
+ #if defined(MBEDTLS_SSL_SERVER_NAME_INDICATION)
+ static void ssl_write_hostname_ext( mbedtls_ssl_context *ssl,
+@@ -3067,4 +3088,24 @@ int mbedtls_ssl_handshake_client_step( mbedtls_ssl_context *ssl )
  
      return( ret );
  }
@@ -1272,19 +774,38 @@ index caeb6f3..20d75b1 100644
 +#undef ssl_get_ecdh_params_from_cert
 +#endif
 +
- #endif /* POLARSSL_SSL_CLI_C */
-diff --git a/library/ssl_srv.c b/library/ssl_srv.c
-index 5f01a01..1fa205e 100644
---- a/library/ssl_srv.c
-+++ b/library/ssl_srv.c
-@@ -51,9 +51,30 @@
+ #endif /* MBEDTLS_SSL_CLI_C */
+diff --git a/library/ssl_cookie.c b/library/ssl_cookie.c
+index 7e0c573..d391ff5 100644
+--- a/library/ssl_cookie.c
++++ b/library/ssl_cookie.c
+@@ -43,10 +43,12 @@
  
- #if defined(POLARSSL_SSL_SESSION_TICKETS)
- /* Implementation that should never be optimized out by the compiler */
+ #include <string.h>
+ 
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
++#endif
+ 
+ /*
+  * If DTLS is in use, then at least one of SHA-1, SHA-256, SHA-512 is
+diff --git a/library/ssl_srv.c b/library/ssl_srv.c
+index ca1e7b8..c21404c 100644
+--- a/library/ssl_srv.c
++++ b/library/ssl_srv.c
+@@ -50,11 +50,33 @@
+ #endif
+ 
+ #if defined(MBEDTLS_SSL_SESSION_TICKETS)
++#if !EMBEDTHIS
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
+ #endif
 +#endif
 +
 +#if EMBEDTHIS
@@ -1305,10 +826,11 @@ index 5f01a01..1fa205e 100644
 +#define ssl_write_alpn_ext srv_ssl_write_alpn_ext
 +#define ssl_get_ecdh_params_from_cert srv_ssl_get_ecdh_params_from_cert
 +#endif
++
  
- /*
-  * Serialize a session in the following format:
-@@ -3624,4 +3645,24 @@ int ssl_handshake_server_step( ssl_context *ssl )
+ #if defined(MBEDTLS_SSL_DTLS_HELLO_VERIFY)
+ int mbedtls_ssl_set_client_transport_id( mbedtls_ssl_context *ssl,
+@@ -3716,4 +3738,24 @@ int mbedtls_ssl_handshake_server_step( mbedtls_ssl_context *ssl )
  
      return( ret );
  }
@@ -1332,67 +854,70 @@ index 5f01a01..1fa205e 100644
 +#undef ssl_get_ecdh_params_from_cert
 +#endif
 +
- #endif /* POLARSSL_SSL_SRV_C */
-diff --git a/library/ssl_tls.c b/library/ssl_tls.c
-index f079adc..2d81895 100644
---- a/library/ssl_tls.c
-+++ b/library/ssl_tls.c
-@@ -60,9 +60,11 @@
- #endif
+ #endif /* MBEDTLS_SSL_SRV_C */
+diff --git a/library/ssl_ticket.c b/library/ssl_ticket.c
+index 0e27900..77feec0 100644
+--- a/library/ssl_ticket.c
++++ b/library/ssl_ticket.c
+@@ -40,9 +40,11 @@
+ #include <string.h>
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- #if defined(POLARSSL_SSL_MAX_FRAGMENT_LENGTH)
  /*
-diff --git a/library/timing.c b/library/timing.c
-index 5d58f52..e805834 100644
---- a/library/timing.c
-+++ b/library/timing.c
-@@ -51,7 +51,9 @@ struct _hr_time
+  * Initialze context
+diff --git a/library/ssl_tls.c b/library/ssl_tls.c
+index 14ee521..92ef1f6 100644
+--- a/library/ssl_tls.c
++++ b/library/ssl_tls.c
+@@ -55,9 +55,11 @@
+ #endif
  
- #include <unistd.h>
- #include <sys/types.h>
-+#if !VXWORKS
- #include <sys/time.h>
+ /* Implementation that should never be optimized out by the compiler */
++#if !EMBEDTHIS
+ static void mbedtls_zeroize( void *v, size_t n ) {
+     volatile unsigned char *p = v; while( n-- ) *p++ = 0;
+ }
 +#endif
- #include <signal.h>
- #include <time.h>
  
+ /* Length of the "epoch" field in the record header */
+ static inline size_t ssl_ep_len( const mbedtls_ssl_context *ssl )
 diff --git a/library/x509.c b/library/x509.c
-index ab105d8..fc01f6d 100644
+index ffc3d6c..a55c19b 100644
 --- a/library/x509.c
 +++ b/library/x509.c
-@@ -1084,4 +1084,8 @@ int x509_self_test( int verbose )
+@@ -1021,4 +1021,8 @@ int mbedtls_x509_self_test( int verbose )
  
- #endif /* POLARSSL_SELF_TEST */
+ #endif /* MBEDTLS_SELF_TEST */
  
 +#if EMBEDTHIS
 +#undef SAFE_SNPRINTF
 +#endif
 +
- #endif /* POLARSSL_X509_USE_C */
+ #endif /* MBEDTLS_X509_USE_C */
 diff --git a/library/x509_crl.c b/library/x509_crl.c
-index de2079f..b8968c1 100644
+index 125a773..68c4f51 100644
 --- a/library/x509_crl.c
 +++ b/library/x509_crl.c
-@@ -68,9 +68,11 @@
+@@ -66,10 +66,12 @@
+ #include <stdio.h>
  #endif
  
- /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ /* Implementation that should never be optimized out by the compiler */
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
   *  Version  ::=  INTEGER  {  v1(0), v2(1)  }
-@@ -764,4 +766,10 @@ void x509_crl_free( x509_crl *crl )
+@@ -718,4 +720,10 @@ void mbedtls_x509_crl_free( mbedtls_x509_crl *crl )
      while( crl_cur != NULL );
  }
  
@@ -1402,24 +927,24 @@ index de2079f..b8968c1 100644
 +#undef BC
 +#endif
 +
- #endif /* POLARSSL_X509_CRL_PARSE_C */
+ #endif /* MBEDTLS_X509_CRL_PARSE_C */
 diff --git a/library/x509_crt.c b/library/x509_crt.c
-index b94f213..123013a 100644
+index f6879dd..503affe 100644
 --- a/library/x509_crt.c
 +++ b/library/x509_crt.c
-@@ -77,9 +77,11 @@
+@@ -76,9 +76,11 @@
  #endif
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
-  *  Version  ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
-@@ -2154,4 +2156,10 @@ void x509_crt_free( x509_crt *crt )
+  * Default profile
+@@ -2345,4 +2347,10 @@ void mbedtls_x509_crt_free( mbedtls_x509_crt *crt )
      while( cert_cur != NULL );
  }
  
@@ -1429,25 +954,25 @@ index b94f213..123013a 100644
 +#undef BC
 +#endif
 +
- #endif /* POLARSSL_X509_CRT_PARSE_C */
+ #endif /* MBEDTLS_X509_CRT_PARSE_C */
 diff --git a/library/x509_csr.c b/library/x509_csr.c
-index 558b078..b7ed950 100644
+index dbf659b..8dd1582 100644
 --- a/library/x509_csr.c
 +++ b/library/x509_csr.c
-@@ -62,9 +62,11 @@
+@@ -61,9 +61,11 @@
  #endif
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
  /*
   *  Version  ::=  INTEGER  {  v1(0)  }
-@@ -462,4 +464,10 @@ void x509_csr_free( x509_csr *csr )
-     polarssl_zeroize( csr, sizeof( x509_csr ) );
+@@ -414,4 +416,10 @@ void mbedtls_x509_csr_free( mbedtls_x509_csr *csr )
+     mbedtls_zeroize( csr, sizeof( mbedtls_x509_csr ) );
  }
  
 +#if EMBEDTHIS
@@ -1456,49 +981,49 @@ index 558b078..b7ed950 100644
 +#undef BC
 +#endif
 +
- #endif /* POLARSSL_X509_CSR_PARSE_C */
+ #endif /* MBEDTLS_X509_CSR_PARSE_C */
 diff --git a/library/x509write_crt.c b/library/x509write_crt.c
-index 80913ec..aa4ef64 100644
+index 9041d44..2a89e0a 100644
 --- a/library/x509write_crt.c
 +++ b/library/x509write_crt.c
-@@ -46,9 +46,11 @@
- #endif /* POLARSSL_PEM_WRITE_C */
+@@ -45,9 +45,11 @@
+ #endif /* MBEDTLS_PEM_WRITE_C */
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- void x509write_crt_init( x509write_cert *ctx )
+ void mbedtls_x509write_crt_init( mbedtls_x509write_cert *ctx )
  {
 diff --git a/library/x509write_csr.c b/library/x509write_csr.c
-index c5a5875..ff5c09d 100644
+index 0b9a285..3674eea 100644
 --- a/library/x509write_csr.c
 +++ b/library/x509write_csr.c
-@@ -45,9 +45,11 @@
+@@ -44,9 +44,11 @@
  #endif
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
  
- void x509write_csr_init( x509write_csr *ctx )
+ void mbedtls_x509write_csr_init( mbedtls_x509write_csr *ctx )
  {
 diff --git a/library/xtea.c b/library/xtea.c
-index 0558b93..82a48b6 100644
+index fe0a350..95cd700 100644
 --- a/library/xtea.c
 +++ b/library/xtea.c
-@@ -44,9 +44,11 @@
- #if !defined(POLARSSL_XTEA_ALT)
+@@ -43,9 +43,11 @@
+ #if !defined(MBEDTLS_XTEA_ALT)
  
  /* Implementation that should never be optimized out by the compiler */
 +#if !EMBEDTHIS
- static void polarssl_zeroize( void *v, size_t n ) {
+ static void mbedtls_zeroize( void *v, size_t n ) {
      volatile unsigned char *p = v; while( n-- ) *p++ = 0;
  }
 +#endif
