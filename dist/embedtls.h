@@ -5,10 +5,11 @@
 #ifndef _h_EMBEDTLS
 #define _h_EMBEDTLS 1
 
+#define EMBEDTHIS 1
+
 #include "me.h"
 #include "osdep.h"
-
-#define EMBEDTHIS 1
+#include "mbedtls-config.h"
 
 #undef MBEDTLS_SELF_TEST
 #define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
