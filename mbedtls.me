@@ -1,5 +1,5 @@
 /*
-    start.me - MbedTLS MakeMe file
+    mbedtls.me - MbedTLS MakeMe file
  */
 
 Me.load({
@@ -19,7 +19,7 @@ Me.load({
         },
 
         combo: {
-            depends: [ 'mbedtls.h', 'mbedtlsLib.c' ],
+            depends: [ 'mbedtls.h', 'mbedtls.c' ],
         },
 
         'mbedtls.h': {
@@ -92,9 +92,9 @@ Me.load({
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
-        'mbedtlsLib.c': {
+        'mbedtls.c': {
             from:       'library/*.c', 
-            to:         'dist/mbedtlsLib.c',
+            to:         'dist/mbedtls.c',
             append:     true,
             filter:     /^#inc.*mbedtls\/.*/mg,
             header:     '/*\n * ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
