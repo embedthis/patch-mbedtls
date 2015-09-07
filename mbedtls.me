@@ -25,7 +25,6 @@ Me.load({
         'mbedtls.h': {
             from: [
                 'include/mbedtls/config.h',
-                'embedthis.h',
                 'include/mbedtls/check_config.h',
                 'include/mbedtls/platform.h',
                 'include/mbedtls/threading.h',
@@ -88,7 +87,7 @@ Me.load({
             to:         'dist/mbedtls.h',
             append:     true,
             filter:     /^#include.*\"/mg,
-            header:     '/*\n * ${settings.title} Library Header\n */\n\n#if !defined(MBEDTLS_CONFIG_FILE)\n#include "mbedtls/config.h"\n#else\n#include MBEDTLS_CONFIG_FILE\n#endif\n#if ME_COM_MBEDTLS\n\n#define EMBEDTHIS 1\n\n',
+            header:     '/*\n *  ${settings.title} Library Header\n */\n\n#if !defined(MBEDTLS_CONFIG_FILE)\n#include "mbedtls/config.h"\n#else\n#include MBEDTLS_CONFIG_FILE\n#endif\n\n#if ME_COM_MBEDTLS\n\n',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
@@ -97,7 +96,7 @@ Me.load({
             to:         'dist/mbedtls.c',
             append:     true,
             filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE/mg,
-            header:     '/*\n * ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
+            header:     '/*\n *  ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */',
             postPerform: function (src, dest, options) {
