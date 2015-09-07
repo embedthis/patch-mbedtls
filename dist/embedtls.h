@@ -1,13 +1,15 @@
 /*
-    embedthis.h - MbedTLS customization Header
-
-    Pak will blend this header with others to create a single master header "mbedtls.h".
+    embedtls.h - MbedTLS customization Header
  */
+
+#ifndef _h_EMBEDTLS
+#define _h_EMBEDTLS 1
 
 #include "me.h"
 #include "osdep.h"
 
 #define EMBEDTHIS 1
+
 #undef MBEDTLS_SELF_TEST
 #define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
 
@@ -101,3 +103,7 @@
 #elif ME_MBEDTLS_XTEA == 0
     #undef MBEDTLS_XTEA_C
 #endif
+
+#include "mbedtls-config.h"
+
+#endif /* _h_EMBEDTLS */

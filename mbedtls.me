@@ -84,7 +84,7 @@ Me.load({
             ],
             to:         'dist/mbedtls.h',
             append:     true,
-            filter:     /^#include.*\"/mg,
+            filter:     /^#include.*\"|^#include MBEDTLS_CONFIG_FILE/mg,
             header:     '/*\n *  ${settings.title} Library Header\n */\n\n#if !defined(MBEDTLS_CONFIG_FILE)\n#include "mbedtls-config.h"\n#else\n#include MBEDTLS_CONFIG_FILE\n#endif\n\n#if ME_COM_MBEDTLS\n\n',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
@@ -103,8 +103,15 @@ Me.load({
             }
         },
         'mbedtls-config.h': {
-            from: 'include/mbedtls/config.h',
-            to:   'dist/mbedtls-config.h',
+            from: [
+                'include/mbedtls/config.h',
+                'include/mbedtls/check-config.h',
+            ],
+            append:     true,
+            to:         'dist/mbedtls-config.h',
+            filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE/mg,
+            header:     '/*\n *  ${settings.title} Configuration\n\n',
+            divider:    true,
         } 
     }
 })
