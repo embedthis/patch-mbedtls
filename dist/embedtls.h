@@ -1,18 +1,32 @@
 /*
     embedtls.h - MbedTLS customization Header
+
+    Override mbedtls-config.h settings
  */
 
 #ifndef _h_EMBEDTLS
 #define _h_EMBEDTLS 1
 
-#define EMBEDTHIS 1
-
 #include "me.h"
 #include "osdep.h"
-#include "mbedtls-config.h"
 
 #undef MBEDTLS_SELF_TEST
+
 #define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
+#define MBEDTLS_DEPRECATED_WARNING
+#define MBEDTLS_DEPRECATED_REMOVED
+
+#if MOB
+#define MBEDTLS_PLATFORM_MEMORY
+#define MBEDTLS_PLATFORM_FREE pfree
+#define MBEDTLS_PLATFORM_CALLOC palloc
+MBEDTLS_MPI_MAX_SIZE
+MBEDTLS_ECP_MAX_BITS
+MBEDTLS_ECP_WINDOW_SIZE
+MBEDTLS_ECP_FIXED_POINT_OPTIM
+MBEDTLS_SSL_MAX_CONTENT_LEN
+#endif
+
 
 #if ME_COM_MPR || ME_MPR_PRODUCT || ME_MULTITHREAD
     #define MBEDTLS_THREADING_C
@@ -32,25 +46,40 @@
 #endif
 
 /*
-    Map MakeMe configuration into MbedTLS defines
+    Map MakeMe configuration into MbedTLS defines.
+    If mbedtls.NAME is defined, then override the MbedTLS definition from config.h
+    COMPACT defines a general compact/embedded configuration.
  */
 #if ME_MBEDTLS_COMPACT
+    #undef MBEDTLS_ARC4_C
+    #undef MBEDTLS_AES_ROM_TABLES
     #undef MBEDTLS_BLOWFISH_C
     #undef MBEDTLS_CAMELLIA_C
     #undef MBEDTLS_DES_C
-    #undef MBEDTLS_PADLOCK_C
     #undef MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
     #undef MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
     #undef MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
     #undef MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
-    #undef MBEDTLS_ARC4_C
-    #undef MBEDTLS_AES_ROM_TABLES
+    #undef MBEDTLS_PADLOCK_C
+    #undef MBEDTLS_SSL3
+    #undef MBEDTLS_SSL_PROTO_DTLS
+    #undef MBEDTLS_VERSION_FEATURES
     #undef MBEDTLS_XTEA_C
-#endif
 
 /*
-    If mbedtls.NAME is defined, then override the MbedTLS definition from config.h
+    #undef MBEDTLS_RIPEMD160_C
+    #undef MBEDTLS_CCM_C
+    #undef MBEDTLS_MD5_C
+    #undef MBEDTLS_ECP_C
+    #undef MBEDTLS_GCM_C
+    #undef MBEDTLS_PEM_WRITE_C
+    #undef MBEDTLS_TIMING_C
+    #undef MBEDTLS_VERSION_C
+    #define MBEDTLS_X509_ALLOW_EXTENSIONS_NON_V3
+    #define MBEDTLS_X509_ALLOW_UNSUPPORTED_CRITICAL_EXTENSION
  */
+#endif
+
 #if ME_MBEDTLS_BLOWFISH
     #define MBEDTLS_BLOWFISH_C
 #elif ME_MBEDTLS_BLOWFISH == 0
