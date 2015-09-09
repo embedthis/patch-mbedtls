@@ -1,3 +1,23 @@
+diff --git a/include/mbedtls/config.h b/include/mbedtls/config.h
+index 66657da..fae879e 100644
+--- a/include/mbedtls/config.h
++++ b/include/mbedtls/config.h
+@@ -29,6 +29,8 @@
+ #ifndef MBEDTLS_CONFIG_H
+ #define MBEDTLS_CONFIG_H
+ 
++#if !defined(MBEDTLS_CONFIG_FILE)
++
+ #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_DEPRECATE)
+ #define _CRT_SECURE_NO_DEPRECATE 1
+ #endif
+@@ -2440,5 +2442,6 @@
+ #endif
+ 
+ #include "check_config.h"
++#endif
+ 
+ #endif /* MBEDTLS_CONFIG_H */
 diff --git a/library/aes.c b/library/aes.c
 index ec9313d..6d14fda 100644
 --- a/library/aes.c

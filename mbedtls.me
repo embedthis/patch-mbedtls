@@ -19,11 +19,13 @@ Me.load({
         },
 
         combo: {
-            depends: [ 'mbedtls.h', 'mbedtls.c', 'mbedtls-config.h' ],
+            depends: [ 'mbedtls.h', 'mbedtls.c' ],
         },
 
         'mbedtls.h': {
             from: [
+                'include/mbedtls/config.h',
+                'include/mbedtls/check_config.h',
                 'include/mbedtls/platform.h',
                 'include/mbedtls/threading.h',
                 'include/mbedtls/bignum.h',
@@ -85,7 +87,7 @@ Me.load({
             to:         'dist/mbedtls.h',
             append:     true,
             filter:     /^#include.*\"|^#include MBEDTLS_CONFIG_FILE/mg,
-            header:     '/*\n *  ${settings.title} Library Header\n */\n\n#if !defined(MBEDTLS_CONFIG_FILE)\n#include "mbedtls-config.h"\n#else\n#include MBEDTLS_CONFIG_FILE\n#endif\n\n#if ME_COM_MBEDTLS\n\n',
+            header:     '/*\n *  ${settings.title} Library Header\n */\n\n#if defined(MBEDTLS_CONFIG_FILE)\n#include MBEDTLS_CONFIG_FILE\n#endif\n\n#if ME_COM_MBEDTLS\n\n',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
@@ -101,17 +103,6 @@ Me.load({
                 // let s = dest.readString()
                 // dest.write(s)
             }
-        },
-        'mbedtls-config.h': {
-            from: [
-                'include/mbedtls/config.h',
-                'include/mbedtls/check_config.h',
-            ],
-            append:     true,
-            to:         'dist/mbedtls-config.h',
-            filter:     /^#inc.*mbedtls\/.*|^#include "check_config.h"|^#include MBEDTLS_CONFIG_FILE/mg,
-            header:     '/*\n *  ${settings.title} Configuration\n */',
-            divider:    true,
-        } 
+        }
     }
 })
