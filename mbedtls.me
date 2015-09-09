@@ -87,7 +87,7 @@ Me.load({
             to:         'dist/mbedtls.h',
             append:     true,
             filter:     /^#include.*\"|^#include MBEDTLS_CONFIG_FILE/mg,
-            header:     '/*\n *  ${settings.title} Library Header\n */\n\n#if ME_COM_MBEDTLS\n\n#if defined(MBEDTLS_CONFIG_FILE)\n#include MBEDTLS_CONFIG_FILE\n#endif\n',
+            header:     '/*\n *  ${settings.title} Library Header\n */\n\n#include "me.h"\n\n#if ME_COM_MBEDTLS\n\n#if defined(MBEDTLS_CONFIG_FILE)\n#include MBEDTLS_CONFIG_FILE\n#endif\n',
             divider:    true,
             footer:     '#endif /* ME_COM_MBEDTLS */'
         }, 
