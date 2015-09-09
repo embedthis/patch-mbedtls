@@ -7,7 +7,6 @@
 #ifndef _h_EMBEDTLS
 #define _h_EMBEDTLS 1
 
-#include "me.h"
 #include "osdep.h"
 
 #undef MBEDTLS_SELF_TEST
