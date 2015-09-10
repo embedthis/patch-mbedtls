@@ -45,6 +45,11 @@
     #undef MBEDTLS_HAVE_TIME
 #endif
 
+#if 0
+c024 TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+c023 TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+c028 TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+#endif
 /*
     Map MakeMe configuration into MbedTLS defines.
     If mbedtls.NAME is defined, then override the MbedTLS definition from config.h
@@ -56,7 +61,7 @@
     #undef MBEDTLS_BLOWFISH_C
     #undef MBEDTLS_CAMELLIA_C
     #undef MBEDTLS_CCM_C
-    #undef MBEDTLS_CIPHER_MODE_CBC
+    //MOB #undef MBEDTLS_CIPHER_MODE_CBC
     #undef MBEDTLS_DES_C
     #undef MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
     #undef MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
