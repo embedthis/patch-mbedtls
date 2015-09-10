@@ -45,6 +45,7 @@
 #endif
 #if VXWORKS
     #undef MBEDTLS_HAVE_TIME
+    #undef MBEDTLS_HAVE_TIME_DATE
 #endif
 
 /*
