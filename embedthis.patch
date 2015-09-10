@@ -1,32 +1,12 @@
-diff --git a/include/mbedtls/config.h b/include/mbedtls/config.h
-index 66657da..fae879e 100644
---- a/include/mbedtls/config.h
-+++ b/include/mbedtls/config.h
-@@ -29,6 +29,8 @@
- #ifndef MBEDTLS_CONFIG_H
- #define MBEDTLS_CONFIG_H
- 
-+#if !defined(MBEDTLS_CONFIG_FILE)
-+
- #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_DEPRECATE)
- #define _CRT_SECURE_NO_DEPRECATE 1
- #endif
-@@ -2440,5 +2442,6 @@
- #endif
- 
- #include "check_config.h"
-+#endif
- 
- #endif /* MBEDTLS_CONFIG_H */
 diff --git a/include/mbedtls/threading.h b/include/mbedtls/threading.h
-index c39cbf2..6e85a9d 100644
+index c39cbf2..b416d47 100644
 --- a/include/mbedtls/threading.h
 +++ b/include/mbedtls/threading.h
 @@ -81,6 +81,7 @@ void mbedtls_threading_set_alt( void (*mutex_init)( mbedtls_threading_mutex_t *
  void mbedtls_threading_free_alt( void );
  #endif /* MBEDTLS_THREADING_ALT */
  
-+#if defined(POLARSSL_THREADING_C)
++#if defined(MBEDTLS_THREADING_C)
  /*
   * The function pointers for mutex_init, mutex_free, mutex_ and mutex_unlock
   *
