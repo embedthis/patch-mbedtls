@@ -664,7 +664,7 @@ index b2c775a..3c9f202 100644
  
  #if defined(MBEDTLS_SELF_TEST)
 diff --git a/library/net.c b/library/net.c
-index b892df9..0554dd0 100644
+index b892df9..877b991 100644
 --- a/library/net.c
 +++ b/library/net.c
 @@ -52,6 +52,11 @@
@@ -679,6 +679,15 @@ index b892df9..0554dd0 100644
  #define read(fd,buf,len)        recv(fd,(char*)buf,(int) len,0)
  #define write(fd,buf,len)       send(fd,(char*)buf,(int) len,0)
  #define close(fd)               closesocket(fd)
+@@ -319,7 +324,7 @@ int mbedtls_net_accept( mbedtls_net_context *bind_ctx,
+         /* UDP: wait for a message, but keep it in the queue */
+         char buf[1] = { 0 };
+ 
+-        ret = recvfrom( bind_ctx->fd, buf, sizeof( buf ), MSG_PEEK,
++        ret = (int) recvfrom( bind_ctx->fd, buf, sizeof( buf ), MSG_PEEK,
+                         (struct sockaddr *) &client_addr, &n );
+ 
+ #if defined(_WIN32)
 @@ -572,4 +577,14 @@ void mbedtls_net_free( mbedtls_net_context *ctx )
      ctx->fd = -1;
  }
