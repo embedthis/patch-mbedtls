@@ -1756,7 +1756,7 @@ index 7e0c573..2eefba4 100644
      return( 0 );
  }
 diff --git a/library/ssl_srv.c b/library/ssl_srv.c
-index ca1e7b8..bbb81e4 100644
+index ca1e7b8..274fed6 100644
 --- a/library/ssl_srv.c
 +++ b/library/ssl_srv.c
 @@ -51,7 +51,7 @@
@@ -1903,7 +1903,18 @@ index ca1e7b8..bbb81e4 100644
              if( ret != 0 )
                  return( ret );
              break;
-@@ -1790,7 +1790,7 @@ have_ciphersuite:
+@@ -1767,6 +1767,10 @@ read_record_header:
+     {
+         MBEDTLS_SSL_DEBUG_MSG( 1, ( "got no ciphersuites in common" ) );
+         mbedtls_ssl_send_fatal_handshake_failure( ssl );
++        for( j = 0, p = buf + ciph_offset + 2; j < ciph_len; j += 2, p += 2 ) {
++            int code = (p[0] & 0xFF) << 8 | (p[1] & 0xFF);
++            MBEDTLS_SSL_DEBUG_MSG( 1, ( "Client cipher %s, 0x%04X", mbedtls_ssl_get_ciphersuite_name(code), code));
++        }
+         return( MBEDTLS_ERR_SSL_NO_CIPHER_CHOSEN );
+     }
+ 
+@@ -1790,7 +1794,7 @@ have_ciphersuite:
  }
  
  #if defined(MBEDTLS_SSL_TRUNCATED_HMAC)
@@ -1912,7 +1923,7 @@ index ca1e7b8..bbb81e4 100644
                                            unsigned char *buf,
                                            size_t *olen )
  {
-@@ -1815,7 +1815,7 @@ static void ssl_write_truncated_hmac_ext( mbedtls_ssl_context *ssl,
+@@ -1815,7 +1819,7 @@ static void ssl_write_truncated_hmac_ext( mbedtls_ssl_context *ssl,
  #endif /* MBEDTLS_SSL_TRUNCATED_HMAC */
  
  #if defined(MBEDTLS_SSL_ENCRYPT_THEN_MAC)
@@ -1921,7 +1932,7 @@ index ca1e7b8..bbb81e4 100644
                                              unsigned char *buf,
                                              size_t *olen )
  {
-@@ -1858,7 +1858,7 @@ static void ssl_write_encrypt_then_mac_ext( mbedtls_ssl_context *ssl,
+@@ -1858,7 +1862,7 @@ static void ssl_write_encrypt_then_mac_ext( mbedtls_ssl_context *ssl,
  #endif /* MBEDTLS_SSL_ENCRYPT_THEN_MAC */
  
  #if defined(MBEDTLS_SSL_EXTENDED_MASTER_SECRET)
@@ -1930,7 +1941,7 @@ index ca1e7b8..bbb81e4 100644
                                         unsigned char *buf,
                                         size_t *olen )
  {
-@@ -1885,7 +1885,7 @@ static void ssl_write_extended_ms_ext( mbedtls_ssl_context *ssl,
+@@ -1885,7 +1889,7 @@ static void ssl_write_extended_ms_ext( mbedtls_ssl_context *ssl,
  #endif /* MBEDTLS_SSL_EXTENDED_MASTER_SECRET */
  
  #if defined(MBEDTLS_SSL_SESSION_TICKETS)
@@ -1939,7 +1950,7 @@ index ca1e7b8..bbb81e4 100644
                                            unsigned char *buf,
                                            size_t *olen )
  {
-@@ -1909,7 +1909,7 @@ static void ssl_write_session_ticket_ext( mbedtls_ssl_context *ssl,
+@@ -1909,7 +1913,7 @@ static void ssl_write_session_ticket_ext( mbedtls_ssl_context *ssl,
  }
  #endif /* MBEDTLS_SSL_SESSION_TICKETS */
  
@@ -1948,7 +1959,7 @@ index ca1e7b8..bbb81e4 100644
                                           unsigned char *buf,
                                           size_t *olen )
  {
-@@ -1950,7 +1950,7 @@ static void ssl_write_renegotiation_ext( mbedtls_ssl_context *ssl,
+@@ -1950,7 +1954,7 @@ static void ssl_write_renegotiation_ext( mbedtls_ssl_context *ssl,
  }
  
  #if defined(MBEDTLS_SSL_MAX_FRAGMENT_LENGTH)
@@ -1957,7 +1968,7 @@ index ca1e7b8..bbb81e4 100644
                                                 unsigned char *buf,
                                                 size_t *olen )
  {
-@@ -1977,7 +1977,7 @@ static void ssl_write_max_fragment_length_ext( mbedtls_ssl_context *ssl,
+@@ -1977,7 +1981,7 @@ static void ssl_write_max_fragment_length_ext( mbedtls_ssl_context *ssl,
  #endif /* MBEDTLS_SSL_MAX_FRAGMENT_LENGTH */
  
  #if defined(MBEDTLS_ECDH_C) || defined(MBEDTLS_ECDSA_C)
@@ -1966,7 +1977,7 @@ index ca1e7b8..bbb81e4 100644
                                                     unsigned char *buf,
                                                     size_t *olen )
  {
-@@ -2007,7 +2007,7 @@ static void ssl_write_supported_point_formats_ext( mbedtls_ssl_context *ssl,
+@@ -2007,7 +2011,7 @@ static void ssl_write_supported_point_formats_ext( mbedtls_ssl_context *ssl,
  #endif /* MBEDTLS_ECDH_C || MBEDTLS_ECDSA_C */
  
  #if defined(MBEDTLS_SSL_ALPN )
@@ -1975,7 +1986,7 @@ index ca1e7b8..bbb81e4 100644
                                  unsigned char *buf, size_t *olen )
  {
      if( ssl->alpn_chosen == NULL )
-@@ -2176,7 +2176,7 @@ static int ssl_write_server_hello( mbedtls_ssl_context *ssl )
+@@ -2176,7 +2180,7 @@ static int ssl_write_server_hello( mbedtls_ssl_context *ssl )
  
      /*
       * Resume is 0  by default, see ssl_handshake_init().
@@ -1984,7 +1995,7 @@ index ca1e7b8..bbb81e4 100644
       * If not, try looking up session ID in our cache.
       */
      if( ssl->handshake->resume == 0 &&
-@@ -2262,41 +2262,41 @@ static int ssl_write_server_hello( mbedtls_ssl_context *ssl )
+@@ -2262,41 +2266,41 @@ static int ssl_write_server_hello( mbedtls_ssl_context *ssl )
      /*
       *  First write extensions, then the total length
       */
@@ -2034,7 +2045,7 @@ index ca1e7b8..bbb81e4 100644
      ext_len += olen;
  #endif
  
-@@ -2505,7 +2505,7 @@ static int ssl_write_certificate_request( mbedtls_ssl_context *ssl )
+@@ -2505,7 +2509,7 @@ static int ssl_write_certificate_request( mbedtls_ssl_context *ssl )
  
  #if defined(MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED) || \
      defined(MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED)
@@ -2043,7 +2054,7 @@ index ca1e7b8..bbb81e4 100644
  {
      int ret;
  
-@@ -2567,7 +2567,7 @@ static int ssl_write_server_key_exchange( mbedtls_ssl_context *ssl )
+@@ -2567,7 +2571,7 @@ static int ssl_write_server_key_exchange( mbedtls_ssl_context *ssl )
      if( ciphersuite_info->key_exchange == MBEDTLS_KEY_EXCHANGE_ECDH_RSA ||
          ciphersuite_info->key_exchange == MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA )
      {
@@ -2052,7 +2063,7 @@ index ca1e7b8..bbb81e4 100644
  
          MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= skip write server key exchange" ) );
          ssl->state++;
-@@ -3716,4 +3716,5 @@ int mbedtls_ssl_handshake_server_step( mbedtls_ssl_context *ssl )
+@@ -3716,4 +3720,5 @@ int mbedtls_ssl_handshake_server_step( mbedtls_ssl_context *ssl )
  
      return( ret );
  }
