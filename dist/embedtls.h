@@ -13,7 +13,6 @@
     #define MBEDTLS_DEPRECATED_WARNING
 #endif
 #define MBEDTLS_DEPRECATED_REMOVED
-#define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
 #undef  MBEDTLS_SELF_TEST
 
 #if ME_COM_MPR || ME_MPR_PRODUCT || ME_MULTITHREAD
@@ -33,7 +32,7 @@
 /*
     Map MakeMe configuration into MbedTLS defines.
     If mbedtls.NAME is defined, then override the MbedTLS definition from config.h
-    COMPACT defines a general compact/embedded configuration.
+    mbedtls.compact defines an optimized general compact/embedded configuration.
  */
 #if ME_MBEDTLS_COMPACT
     #undef MBEDTLS_ARC4_C
@@ -57,6 +56,8 @@
     #undef MBEDTLS_VERSION_C
     #undef MBEDTLS_VERSION_FEATURES
     #undef MBEDTLS_XTEA_C
+    #define MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
+    #define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
 #endif
 
 /*
@@ -72,6 +73,7 @@
     #define MBEDTLS_ARC4_C
 #elif defined(ME_MBEDTLS_ARC4) && ME_MBEDTLS_ARC4 == 0
     #undef MBEDTLS_ARC4_C
+    #define MBEDTLS_REMOVE_ARC4_CIPHERSUITES
 #endif
 
 #if ME_MBEDTLS_CAMELLIA
@@ -122,6 +124,16 @@ mob mob
     #define MBEDTLS_XTEA_C
 #elif defined(ME_MBEDTLS_XTEA) && ME_MBEDTLS_XTEA == 0
     #undef MBEDTLS_XTEA_C
+#endif
+
+/*
+    This is needed for some old clients (baiduspider)
+    Default to enabled.
+ */
+#if ME_MBEDTLS_SSLV2_HELLO
+    #define MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
+#elif defined(ME_MBEDTLS_SSLV2_HELLO) && ME_MBEDTLS_SSLV2_HELLO == 0
+    #undef MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
 #endif
 
 #ifndef MBEDTLS_SSL_CIPHERSUITES
