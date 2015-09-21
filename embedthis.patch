@@ -918,7 +918,7 @@ index b2c775a..3c9f202 100644
  
  #if defined(MBEDTLS_SELF_TEST)
 diff --git a/library/net.c b/library/net.c
-index b892df9..348daba 100644
+index b5d0688..348daba 100644
 --- a/library/net.c
 +++ b/library/net.c
 @@ -52,6 +52,11 @@
@@ -965,15 +965,6 @@ index b892df9..348daba 100644
          {
              close( ctx->fd );
              ret = MBEDTLS_ERR_NET_SOCKET_FAILED;
-@@ -319,7 +332,7 @@ int mbedtls_net_accept( mbedtls_net_context *bind_ctx,
-         /* UDP: wait for a message, but keep it in the queue */
-         char buf[1] = { 0 };
- 
--        ret = recvfrom( bind_ctx->fd, buf, sizeof( buf ), MSG_PEEK,
-+        ret = (int) recvfrom( bind_ctx->fd, buf, sizeof( buf ), MSG_PEEK,
-                         (struct sockaddr *) &client_addr, &n );
- 
- #if defined(_WIN32)
 @@ -358,8 +371,13 @@ int mbedtls_net_accept( mbedtls_net_context *bind_ctx,
                           (struct sockaddr *) &local_addr, &n ) != 0 ||
              ( bind_ctx->fd = (int) socket( local_addr.ss_family,
@@ -1414,7 +1405,7 @@ index 8bad7ab..d4f3908 100644
 +
  #endif /* MBEDTLS_SSL_TLS_C */
 diff --git a/library/ssl_cli.c b/library/ssl_cli.c
-index 5a9c432..a64e96f 100644
+index c82e2e7..464ef94 100644
 --- a/library/ssl_cli.c
 +++ b/library/ssl_cli.c
 @@ -41,7 +41,9 @@
@@ -1688,7 +1679,7 @@ index 5a9c432..a64e96f 100644
                  return( ret );
  
              break;
-@@ -1868,7 +1870,7 @@ static int ssl_parse_signature_algorithm( mbedtls_ssl_context *ssl,
+@@ -1874,7 +1876,7 @@ static int ssl_parse_signature_algorithm( mbedtls_ssl_context *ssl,
  
  #if defined(MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED) || \
      defined(MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED)
@@ -1697,7 +1688,7 @@ index 5a9c432..a64e96f 100644
  {
      int ret;
      const mbedtls_ecp_keypair *peer_key;
-@@ -1924,9 +1926,9 @@ static int ssl_parse_server_key_exchange( mbedtls_ssl_context *ssl )
+@@ -1936,9 +1938,9 @@ static int ssl_parse_server_key_exchange( mbedtls_ssl_context *ssl )
      if( ciphersuite_info->key_exchange == MBEDTLS_KEY_EXCHANGE_ECDH_RSA ||
          ciphersuite_info->key_exchange == MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA )
      {
@@ -1709,7 +1700,7 @@ index 5a9c432..a64e96f 100644
              return( ret );
          }
  
-@@ -2899,7 +2901,7 @@ static int ssl_parse_new_session_ticket( mbedtls_ssl_context *ssl )
+@@ -2917,7 +2919,7 @@ static int ssl_parse_new_session_ticket( mbedtls_ssl_context *ssl )
      if( ticket_len == 0 )
          return( 0 );
  
@@ -1718,7 +1709,7 @@ index 5a9c432..a64e96f 100644
                        ssl->session_negotiate->ticket_len );
      mbedtls_free( ssl->session_negotiate->ticket );
      ssl->session_negotiate->ticket = NULL;
-@@ -3067,4 +3069,5 @@ int mbedtls_ssl_handshake_client_step( mbedtls_ssl_context *ssl )
+@@ -3085,4 +3087,5 @@ int mbedtls_ssl_handshake_client_step( mbedtls_ssl_context *ssl )
  
      return( ret );
  }
@@ -1756,7 +1747,7 @@ index 7e0c573..2eefba4 100644
      return( 0 );
  }
 diff --git a/library/ssl_srv.c b/library/ssl_srv.c
-index ca1e7b8..274fed6 100644
+index b48a609..20f2d36 100644
 --- a/library/ssl_srv.c
 +++ b/library/ssl_srv.c
 @@ -51,7 +51,7 @@
@@ -2101,7 +2092,7 @@ index 0e27900..2b7cb38 100644
  
  #endif /* MBEDTLS_SSL_TICKET_C */
 diff --git a/library/ssl_tls.c b/library/ssl_tls.c
-index 14ee521..d5ffbd9 100644
+index d9b05fd..7ac697b 100644
 --- a/library/ssl_tls.c
 +++ b/library/ssl_tls.c
 @@ -55,7 +55,7 @@
@@ -2182,7 +2173,7 @@ index 14ee521..d5ffbd9 100644
  
  #if defined(MBEDTLS_ZLIB_SUPPORT)
      // Initialize compression
-@@ -4455,9 +4455,9 @@ static void ssl_calc_finished_ssl(
+@@ -4669,9 +4669,9 @@ static void ssl_calc_finished_ssl(
      mbedtls_md5_free(  &md5  );
      mbedtls_sha1_free( &sha1 );
  
@@ -2195,7 +2186,7 @@ index 14ee521..d5ffbd9 100644
  
      MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= calc  finished" ) );
  }
-@@ -4516,7 +4516,7 @@ static void ssl_calc_finished_tls(
+@@ -4730,7 +4730,7 @@ static void ssl_calc_finished_tls(
      mbedtls_md5_free(  &md5  );
      mbedtls_sha1_free( &sha1 );
  
@@ -2204,7 +2195,7 @@ index 14ee521..d5ffbd9 100644
  
      MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= calc  finished" ) );
  }
-@@ -4566,7 +4566,7 @@ static void ssl_calc_finished_tls_sha256(
+@@ -4780,7 +4780,7 @@ static void ssl_calc_finished_tls_sha256(
  
      mbedtls_sha256_free( &sha256 );
  
@@ -2213,7 +2204,7 @@ index 14ee521..d5ffbd9 100644
  
      MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= calc  finished" ) );
  }
-@@ -4615,7 +4615,7 @@ static void ssl_calc_finished_tls_sha384(
+@@ -4829,7 +4829,7 @@ static void ssl_calc_finished_tls_sha384(
  
      mbedtls_sha512_free( &sha512 );
  
@@ -2222,7 +2213,7 @@ index 14ee521..d5ffbd9 100644
  
      MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= calc  finished" ) );
  }
-@@ -6548,7 +6548,7 @@ void mbedtls_ssl_transform_free( mbedtls_ssl_transform *transform )
+@@ -6779,7 +6779,7 @@ void mbedtls_ssl_transform_free( mbedtls_ssl_transform *transform )
      mbedtls_md_free( &transform->md_ctx_enc );
      mbedtls_md_free( &transform->md_ctx_dec );
  
@@ -2231,7 +2222,7 @@ index 14ee521..d5ffbd9 100644
  }
  
  #if defined(MBEDTLS_X509_CRT_PARSE_C)
-@@ -6599,7 +6599,7 @@ void mbedtls_ssl_handshake_free( mbedtls_ssl_handshake_params *handshake )
+@@ -6830,7 +6830,7 @@ void mbedtls_ssl_handshake_free( mbedtls_ssl_handshake_params *handshake )
  #if defined(MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED)
      if( handshake->psk != NULL )
      {
@@ -2240,7 +2231,7 @@ index 14ee521..d5ffbd9 100644
          mbedtls_free( handshake->psk );
      }
  #endif
-@@ -6629,7 +6629,7 @@ void mbedtls_ssl_handshake_free( mbedtls_ssl_handshake_params *handshake )
+@@ -6860,7 +6860,7 @@ void mbedtls_ssl_handshake_free( mbedtls_ssl_handshake_params *handshake )
      ssl_flight_free( handshake->flight );
  #endif
  
@@ -2249,7 +2240,7 @@ index 14ee521..d5ffbd9 100644
  }
  
  void mbedtls_ssl_session_free( mbedtls_ssl_session *session )
-@@ -6649,7 +6649,7 @@ void mbedtls_ssl_session_free( mbedtls_ssl_session *session )
+@@ -6880,7 +6880,7 @@ void mbedtls_ssl_session_free( mbedtls_ssl_session *session )
      mbedtls_free( session->ticket );
  #endif
  
@@ -2258,7 +2249,7 @@ index 14ee521..d5ffbd9 100644
  }
  
  /*
-@@ -6664,20 +6664,20 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
+@@ -6895,20 +6895,20 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
  
      if( ssl->out_buf != NULL )
      {
@@ -2282,7 +2273,7 @@ index 14ee521..d5ffbd9 100644
          mbedtls_free( ssl->compress_buf );
      }
  #endif
-@@ -6708,7 +6708,7 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
+@@ -6939,7 +6939,7 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
  #if defined(MBEDTLS_X509_CRT_PARSE_C)
      if( ssl->hostname != NULL )
      {
@@ -2291,7 +2282,7 @@ index 14ee521..d5ffbd9 100644
          mbedtls_free( ssl->hostname );
      }
  #endif
-@@ -6728,7 +6728,7 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
+@@ -6959,7 +6959,7 @@ void mbedtls_ssl_free( mbedtls_ssl_context *ssl )
      MBEDTLS_SSL_DEBUG_MSG( 2, ( "<= free" ) );
  
      /* Actually clear after last debug message */
@@ -2300,7 +2291,7 @@ index 14ee521..d5ffbd9 100644
  }
  
  /*
-@@ -6923,8 +6923,8 @@ void mbedtls_ssl_config_free( mbedtls_ssl_config *conf )
+@@ -7154,8 +7154,8 @@ void mbedtls_ssl_config_free( mbedtls_ssl_config *conf )
  #if defined(MBEDTLS_KEY_EXCHANGE__SOME__PSK_ENABLED)
      if( conf->psk != NULL )
      {
@@ -2311,7 +2302,7 @@ index 14ee521..d5ffbd9 100644
          mbedtls_free( conf->psk );
          mbedtls_free( conf->psk_identity );
          conf->psk_len = 0;
-@@ -6936,7 +6936,7 @@ void mbedtls_ssl_config_free( mbedtls_ssl_config *conf )
+@@ -7167,7 +7167,7 @@ void mbedtls_ssl_config_free( mbedtls_ssl_config *conf )
      ssl_key_cert_free( conf->key_cert );
  #endif
  
