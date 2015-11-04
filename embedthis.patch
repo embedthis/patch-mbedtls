@@ -208,6 +208,18 @@ index 9462764..bcfefde 100644
  
  #if !defined(MBEDTLS_SHA512_ALT)
  // Regular implementation
+diff --git a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
+index a017ec0..dc95c77 100644
+--- a/include/mbedtls/ssl.h
++++ b/include/mbedtls/ssl.h
+@@ -791,6 +791,7 @@ struct mbedtls_ssl_context
+     char own_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
+     char peer_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
+ #endif
++    void *appData;
+ };
+ 
+ #if defined(MBEDTLS_SSL_HW_RECORD_ACCEL)
 diff --git a/include/mbedtls/threading.h b/include/mbedtls/threading.h
 index c39cbf2..b416d47 100644
 --- a/include/mbedtls/threading.h
