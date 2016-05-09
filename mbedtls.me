@@ -18,6 +18,14 @@ Me.load({
             `
         },
 
+        makepatch: {
+            /* Format patch from the latest commit */
+            shell: `
+                # git diff dist include library >../patch-mbedtls/embedthis.patch
+                git diff development..HEAD include library >../patch-mbedtls/embedthis.patch
+            `
+        },
+
         combo: {
             depends: [ 'mbedtls.h', 'mbedtls.c' ],
         },
@@ -41,6 +49,7 @@ Me.load({
                 'include/mbedtls/asn1.h',
                 'include/mbedtls/ecp.h',
                 'include/mbedtls/ecdsa.h',
+                'include/mbedtls/ecjpake.h',
                 'include/mbedtls/pk.h',
                 'include/mbedtls/pk_internal.h',
                 'include/mbedtls/x509.h',
