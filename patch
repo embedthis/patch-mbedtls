@@ -5,9 +5,9 @@ rm -f dist/mbedtls.* ; me --file mbedtls.me combo
 #   Delete 2nd and subsequent mbedtls_zeroize()
 #
 cp dist/mbedtls.c .mbedtls.c
-cat .mbedtls.c | tee mob.1 | 
-sed -e '1,/mbedtls_zeroize/s/mbedtls_zeroize/MBEDTLS_ZEROIZE/' | tee mob.2 |
-perl -p0e 's/static void mbedtls_zeroize.*?}/\/* zeroize was here *\//sg' | tee mob.3 |
+cat .mbedtls.c | 
+sed -e '1,/mbedtls_zeroize/s/mbedtls_zeroize/MBEDTLS_ZEROIZE/' | 
+perl -p0e 's/static void mbedtls_zeroize.*?}/\/* zeroize was here *\//sg' |
 sed -e 's/MBEDTLS_ZEROIZE/mbedtls_zeroize/g' >dist/mbedtls.c
 
 #
