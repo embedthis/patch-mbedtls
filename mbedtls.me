@@ -12,13 +12,16 @@ Me.load({
         patch: {
             action: `
                 trace('Patch', 'Apply patches')
+                sh('./patch')
+                /*
                 for each (f in Path('.').files('*.patch')) {
-                    // sh('patch -N -p1 -s < ' + f)
-                }
+                    sh('patch -N -p1 -s < ' + f)
+                } */
             `
         },
 
         makepatch: {
+            /* MOB - this is not right and patches previous edits */
             /* Format patch from the latest commit */
             shell: `
                 # git diff dist include library >../patch-mbedtls/embedthis.patch
@@ -35,9 +38,11 @@ Me.load({
                 'include/mbedtls/config.h',
                 'include/mbedtls/check_config.h',
                 'include/mbedtls/platform.h',
+                'include/mbedtls/platform_time.h',
                 'include/mbedtls/threading.h',
                 'include/mbedtls/bignum.h',
                 'include/mbedtls/net.h',
+                'include/mbedtls/net_sockets.h',
                 'include/mbedtls/dhm.h',
                 'include/mbedtls/error.h',
                 'include/mbedtls/md.h',
@@ -46,6 +51,7 @@ Me.load({
                 'include/mbedtls/md2.h',
                 'include/mbedtls/md4.h',
                 'include/mbedtls/rsa.h',
+                'include/mbedtls/rsa_internal.h',
                 'include/mbedtls/asn1.h',
                 'include/mbedtls/ecp.h',
                 'include/mbedtls/ecdsa.h',
@@ -100,6 +106,7 @@ Me.load({
             ],
             to:         'dist/mbedtls.h',
             append:     true,
+            sort:       false,
             filter:     /^#include.*\"|^#include MBEDTLS_CONFIG_FILE/mg,
             header:     '/*\n *  ${settings.title} Library Header\n */\n\n#include "me.h"\n\n#if ME_COM_MBEDTLS\n\n#if defined(MBEDTLS_CONFIG_FILE)\n#include MBEDTLS_CONFIG_FILE\n#endif\n',
             divider:    true,
@@ -112,6 +119,7 @@ Me.load({
             filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE/mg,
             header:     '/*\n *  ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
             divider:    true,
+            dividerFile: 'undef.txt',
             footer:     '#endif /* ME_COM_MBEDTLS */',
             postPerform: function (src, dest, options) {
                 // let s = dest.readString()

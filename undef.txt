@@ -1,0 +1,31 @@
+/*
+    Amalgamated build undefines
+ */
+
+#undef ADD
+#undef BC
+#undef BEFORE_COLON
+#undef F
+#undef F0
+#undef F1
+#undef F2
+#undef F3
+#undef F4
+#undef F5
+#undef FSb
+#undef K
+#undef KK
+#undef P
+#undef R
+#undef ROTR
+#undef S
+#undef S0
+#undef S1
+#undef S2
+#undef S3
+#undef SAFE_SNPRINTF
+#undef SHR
+#undef close
+#undef read
+#undef supported_init
+#undef write
