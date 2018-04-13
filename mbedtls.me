@@ -6,27 +6,28 @@ Me.load({
     targets: {
 
         'pak-postcache': {
-            depends: [ 'patch', 'combo' ],
+            depends: [ 'patch', 'combo', 'fixup' ],
         },
 
         patch: {
             action: `
-                trace('Patch', 'Apply patches')
-                sh('./patch')
-                /*
+                trace('Patch', 'Apply patches to core source files')
                 for each (f in Path('.').files('*.patch')) {
                     sh('patch -N -p1 -s < ' + f)
-                } */
+                }
             `
         },
 
-        makepatch: {
-            /* MOB - this is not right and patches previous edits */
-            /* Format patch from the latest commit */
-            shell: `
-                # git diff dist include library >../patch-mbedtls/embedthis.patch
-                git diff development..HEAD include library >../patch-mbedtls/embedthis.patch
+        fixup: {
+            action: `
+                trace('Patch', 'Apply patch to dist/*')
+                sh('./fixup')
             `
+        }
+
+        makepatch: {
+            /* Format patch from the embedthis branch to development */
+            shell: `git diff development..embedthis include library >../patch-mbedtls/embedthis.patch`
         },
 
         combo: {
