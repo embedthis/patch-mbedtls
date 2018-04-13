@@ -12,7 +12,7 @@ Me.load({
         patch: {
             action: `
                 trace('Patch', 'Apply patches')
-                sh('./patch')
+                sh('bash patch')
                 /*
                 for each (f in Path('.').files('*.patch')) {
                     sh('patch -N -p1 -s < ' + f)
