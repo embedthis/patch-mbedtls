@@ -18,7 +18,7 @@ index 97cee07c..ac02b77b 100644
  /*
   * Round constants
   */
-+#define KK
++#define K KK
  static const uint64_t K[80] =
  {
      UL64(0x428A2F98D728AE22),  UL64(0x7137449123EF65CD),
