@@ -131,12 +131,12 @@
 /*
     This is needed for some old clients (baiduspider)
     Default to enabled.
- */
 #if ME_MBEDTLS_SSLV2_HELLO
     #define MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
 #elif defined(ME_MBEDTLS_SSLV2_HELLO) && ME_MBEDTLS_SSLV2_HELLO == 0
     #undef MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
 #endif
+ */
 
 #ifndef MBEDTLS_SSL_CIPHERSUITES
     /*
