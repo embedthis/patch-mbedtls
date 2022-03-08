@@ -123,7 +123,7 @@ Me.load({
         }, 
         'mbedtls.c': {
             from:       'library/*.c', 
-            exclude:    'library/psa_*',
+            exclude:    /psa_*/,
             to:         'dist/mbedtls.c',
             append:     true,
             filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE|^#include.*common.h.*|^#include.*constant_time.*|^#include.*ecp_invasive.h.*|^#include.*library\/.*/mg,
