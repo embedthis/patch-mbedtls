@@ -1,11 +1,11 @@
 diff --git a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
-index dffc16219..5ea1cc165 100644
+index 209dbf605..e7b4f717b 100644
 --- a/include/mbedtls/ssl.h
 +++ b/include/mbedtls/ssl.h
-@@ -916,6 +916,7 @@ struct mbedtls_ssl_context
-     char own_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
-     char peer_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
- #endif
+@@ -1466,6 +1466,7 @@ struct mbedtls_ssl_context
+                             *   Possible values are #MBEDTLS_SSL_CID_ENABLED
+                             *   and #MBEDTLS_SSL_CID_DISABLED. */
+ #endif /* MBEDTLS_SSL_DTLS_CONNECTION_ID */
 +    void *appData;
  };
 
