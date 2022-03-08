@@ -1,5 +1,5 @@
 
-rm -f dist/mbedtls.* ; me --file mbedtls.me combo
+rm -f dist/mbedtls.h dist/mbedtls.c ; me --file mbedtls.me combo
 
 #
 #   Delete 2nd and subsequent mbedtls_zeroize()
