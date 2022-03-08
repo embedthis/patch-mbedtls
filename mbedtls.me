@@ -130,7 +130,7 @@ Me.load({
             divider:    true,
             dividerFile: 'undef.txt',
             footer:     '#endif /* ME_COM_MBEDTLS */',
-            replace:    [[/FSb/g, 'FSb{U}'], [/test_input/g, 'test_input{U}'],
+            replace:    [[/FSb/g, 'FSb{U}'], [/test_input/g, 'test_input{U}']],
             postPerform: function (src, dest, options) {
                 // let s = dest.readString()
                 // dest.write(s)
