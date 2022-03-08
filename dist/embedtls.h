@@ -9,6 +9,9 @@
 
 #include "osdep.h"
 
+//  MOB
+#undef MBEDTLS_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO
+
 #if ME_UNIX_LIKE
     #define MBEDTLS_DEPRECATED_WARNING
 #endif
