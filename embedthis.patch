@@ -1,24 +1,11 @@
 diff --git a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
-index bb9c02db..3dede7ee 100644
+index 072ebbe46..280ba3d06 100644
 --- a/include/mbedtls/ssl.h
 +++ b/include/mbedtls/ssl.h
-@@ -925,6 +925,7 @@ struct mbedtls_ssl_context
-     char own_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
-     char peer_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
- #endif
+@@ -1672,6 +1672,8 @@ struct mbedtls_ssl_context
+     /** Callback to export key block and master secret                      */
+     mbedtls_ssl_export_keys_t *MBEDTLS_PRIVATE(f_export_keys);
+     void *MBEDTLS_PRIVATE(p_export_keys);            /*!< context for key export callback    */
++
 +    void *appData;
  };
-
- #if defined(MBEDTLS_SSL_HW_RECORD_ACCEL)
-diff --git a/library/sha512.c b/library/sha512.c
-index 97cee07c..ac02b77b 100644
---- a/library/sha512.c
-+++ b/library/sha512.c
-@@ -162,6 +162,7 @@ void mbedtls_sha512_starts( mbedtls_sha512_context *ctx,
- /*
-  * Round constants
-  */
-+#define K KK
- static const uint64_t K[80] =
- {
-     UL64(0x428A2F98D728AE22),  UL64(0x7137449123EF65CD),
