@@ -1,11 +1,12 @@
 diff --git a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
-index 072ebbe46..280ba3d06 100644
+index dffc16219..5ea1cc165 100644
 --- a/include/mbedtls/ssl.h
 +++ b/include/mbedtls/ssl.h
-@@ -1672,6 +1672,8 @@ struct mbedtls_ssl_context
-     /** Callback to export key block and master secret                      */
-     mbedtls_ssl_export_keys_t *MBEDTLS_PRIVATE(f_export_keys);
-     void *MBEDTLS_PRIVATE(p_export_keys);            /*!< context for key export callback    */
-+
+@@ -916,6 +916,7 @@ struct mbedtls_ssl_context
+     char own_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
+     char peer_verify_data[MBEDTLS_SSL_VERIFY_DATA_MAX_LEN]; /*!<  previous handshake verify data */
+ #endif
 +    void *appData;
  };
+
+ #if defined(MBEDTLS_SSL_HW_RECORD_ACCEL)
