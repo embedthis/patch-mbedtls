@@ -131,7 +131,17 @@ Me.load({
             divider:    true,
             dividerFile: 'undef.txt',
             footer:     '#endif /* ME_COM_MBEDTLS */',
-            replace:    [[/FSb/g, 'FSb{U}'], [/test_input/g, 'test_input{U}'], [/test_output/g, 'test_output{U}'], [/test_data/g, 'test_data{U}'], [/result_pr/g, 'result_pr{U}']],
+            replace:    [
+                [/FSb/g, 'FSb{U}'], 
+                [/test_input/g, 'test_input{U}'], 
+                [/test_output/g, 'test_output{U}'], 
+                [/test_data/g, 'test_data{U}'], 
+                [/test_keys/g, 'test_keys{U}'], 
+                [/test_mac/g, 'test_mac{U}'], 
+                [/result_pr/g, 'result_pr{U}'],
+                [/result_nopr/g, 'result_nopr{U}'],
+                [/ssl_parse_certificate_verify/g, 'ssl_parse_certificate_verify{U}'],
+            ],
             postPerform: function (src, dest, options) {
                 // let s = dest.readString()
                 // dest.write(s)
