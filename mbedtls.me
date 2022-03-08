@@ -36,6 +36,7 @@ Me.load({
 
         'mbedtls.h': {
             from: [
+                'library/common.h',
                 'include/mbedtls/config.h',
                 'include/mbedtls/check_config.h',
                 'include/mbedtls/platform.h',
@@ -43,6 +44,8 @@ Me.load({
                 'include/mbedtls/platform_util.h',
                 'include/mbedtls/threading.h',
                 'include/mbedtls/bignum.h',
+                'include/mbedtls/constant_time.h"',
+                'library/constant_time_internal.h"',
                 'include/mbedtls/net.h',
                 'include/mbedtls/net_sockets.h',
                 'include/mbedtls/dhm.h',
@@ -65,8 +68,8 @@ Me.load({
                 'include/mbedtls/x509_crt.h',
                 'include/mbedtls/x509_csr.h',
                 'include/mbedtls/cipher.h',
-                'include/mbedtls/cipher_internal.h',
                 'include/mbedtls/ssl_ciphersuites.h',
+                'include/mbedtls/cipher_internal.h',
                 'include/mbedtls/ecdh.h',
                 'include/mbedtls/sha1.h',
                 'include/mbedtls/sha256.h',
@@ -87,6 +90,7 @@ Me.load({
                 'include/mbedtls/timing.h',
                 'include/mbedtls/xtea.h',
                 'include/mbedtls/ssl.h',
+                'library/ssl_internal.h"',
                 'include/mbedtls/ssl_cookie.h',
                 'include/mbedtls/ssl_internal.h',
                 'include/mbedtls/ssl_cache.h',
@@ -104,6 +108,7 @@ Me.load({
                 'include/mbedtls/pkcs5.h',
                 'include/mbedtls/oid.h',
                 'include/mbedtls/ripemd160.h',
+                'include/mbedtls/hkdf.h',
                 'include/mbedtls/version.h',
             ],
             to:         'dist/mbedtls.h',
@@ -118,11 +123,12 @@ Me.load({
             from:       'library/*.c', 
             to:         'dist/mbedtls.c',
             append:     true,
-            filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE/mg,
+            filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE|^#include.*common.h.*|^#include.*constant_time.*|^#include.*library\/.*/mg,
             header:     '/*\n *  ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
             divider:    true,
             dividerFile: 'undef.txt',
             footer:     '#endif /* ME_COM_MBEDTLS */',
+            replace:    [[/FSb/mg, 'FSb{U}']],
             postPerform: function (src, dest, options) {
                 // let s = dest.readString()
                 // dest.write(s)
