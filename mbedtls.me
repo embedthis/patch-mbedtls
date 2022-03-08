@@ -125,7 +125,7 @@ Me.load({
             from:       'library/*.c', 
             to:         'dist/mbedtls.c',
             append:     true,
-            filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE|^#include.*common.h.*|^#include.*constant_time.*|^#include.*library\/.*/mg,
+            filter:     /^#inc.*mbedtls\/.*|^#include MBEDTLS_CONFIG_FILE|^#include.*common.h.*|^#include.*constant_time.*|^#include.*ecp_invasive.h.*|^#include.*library\/.*/mg,
             header:     '/*\n *  ${settings.title} Library Source\n */\n\n#include \"mbedtls.h\"\n\n#if ME_COM_MBEDTLS',
             divider:    true,
             dividerFile: 'undef.txt',
