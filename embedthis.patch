@@ -10,3 +10,15 @@ index 209dbf605..e7b4f717b 100644
  };
 
  #if defined(MBEDTLS_SSL_HW_RECORD_ACCEL)
+diff --git a/library/sha512.c b/library/sha512.c
+index 02a135ca9..020842cba 100644
+--- a/library/sha512.c
++++ b/library/sha512.c
+@@ -153,6 +153,7 @@ void mbedtls_sha512_starts( mbedtls_sha512_context *ctx,
+ /*
+  * Round constants
+  */
++#define K KK
+ static const uint64_t K[80] =
+ {
+     UL64(0x428A2F98D728AE22),  UL64(0x7137449123EF65CD),
